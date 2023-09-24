@@ -53,6 +53,63 @@ Um dicionário de dados em um sistema de banco de dados é um repositório centr
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
+### Entidade Personagem
+
+<figcaption align='center'>
+    <b>Figura 7 Personagem </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade NPC
+
+![](../assets/DicionarioDados/NPC.png)
+<figcaption align='center'>
+    <b>Figura 8: NPC </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade PC
+
+![](../assets/DicionarioDados/PC.png)
+<figcaption align='center'>
+    <b>Figura 9: PC </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade Instancia
+
+![](../assets/DicionarioDados/Instancia.png)
+<figcaption align='center'>
+    <b>Figura 10: Instância </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade Zumbi
+
+![](../assets/DicionarioDados/Zumbi.png)
+
+<figcaption align='center'>
+    <b>Figura 11: Zumbi </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+
+### Entidade Animal
+
+![](../assets/DicionarioDados/Animal.png)
+<figcaption align='center'>
+    <b>Figura 12: Animal </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+
+### Entidade Inventario
+![](../assets/DicionarioDados/Inventario.png)
+<figcaption align='center'>
+    <b>Figura 13: Inventario </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
 
 ## Fontes
 - [1](https://medium.com/psicodata/dicionario-de-dados-ac3ce726c34b) 
