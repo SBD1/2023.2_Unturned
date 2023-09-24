@@ -7,16 +7,51 @@ Um dicionário de dados em um sistema de banco de dados é um repositório centr
 ### Entidade Mapa
 
 ![](../assets/DicionarioDados/Mapa.png)
+<figcaption align='center'>
+    <b>Figura 1: Mapa </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
 
 
 ### Entidade Cidade
 
 ![](../assets/DicionarioDados/Cidade.png)
-
+<figcaption align='center'>
+    <b>Figura 2: Cidade </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
 
 ### Entidade Veículo
 
 ![](../assets/DicionarioDados/Veiculo.png)
+<figcaption align='center'>
+    <b>Figura 3: Veículo </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade Terrestre
+
+![](../assets/DicionarioDados/Terrestre.png)
+<figcaption align='center'>
+    <b>Figura 4: Terrestre </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade Aquático
+
+![](../assets/DicionarioDados/Aquatico.png)
+<figcaption align='center'>
+    <b>Figura 5: Aquático </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+### Entidade Aéreo
+
+![](../assets/DicionarioDados/Aereo.png)
+<figcaption align='center'>
+    <b>Figura 6: Aéreo </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
 
 
 ## Fontes
