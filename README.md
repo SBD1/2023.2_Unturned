@@ -18,13 +18,14 @@ Esse repositório é dedicado a realização dos trabalhos da matéria Sistemas 
 
 - Módulo 1
   - [DER](docs/DER.md)
+  - [MR](docs/MR.md)
 
 ## Integrantes do grupo
 
-| **Matrícula** |            **Nome**             |
-| :-----------: | :-----------------------------: |
-|   200057421   |      Delziron Braz de Lima      |
-|   200017519   |  Eurico Menezes de Abreu Neto   |
-|   200067923   | João Henrique Marques Calzavara |
-|   200062379   |     Marcos Vinícius de Deus     |  |
+|**Foto**| **Matrícula** |            **Nome**             |
+|:-------:| :-----------: | :-----------------------------: |
+|<img src="https://avatars.githubusercontent.com/DelzironBraz" width="100px;" alt="Foto Delziron"/>  |   200057421   |      Delziron Braz de Lima      |
+|<img src="https://avatars.githubusercontent.com/EuricoAbreu" width="100px;" alt="Foto Eurico">|   200017519   |  Eurico Menezes de Abreu Neto   |
+|<img src="https://avatars.githubusercontent.com/u/71076129?v=4" width="100px;" alt="Foto João Henrique"/> |   200067923   | João Henrique Marques Calzavara |
+|<img src="https://avatars.githubusercontent.com/u/87666623?v=4" width="100px;" alt="Foto Marcos Vinicius"/>  |   200062379   |     Marcos Vinícius de Deus     | 
 
