@@ -5,3 +5,12 @@ Um Modelo de Relacionamento é uma representação visual de como as entidades (
 Agora, a seguir, apresentaremos um Modelo de Relacionamento (MR) específico relacionado ao jogo Unturned, que ilustrará como as diferentes partes do jogo estão interconectadas e como os dados são organizados no contexto que iremos desenvolver desse jogo.
 
 ![](../assets/MRv1.png)
+
+
+
+<figcaption align='center'>
+    <b>Figura 1: Modelo Relacional </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+<br>

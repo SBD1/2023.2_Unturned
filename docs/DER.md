@@ -13,3 +13,11 @@ Relacionamentos são as associações entre entidades. Por exemplo, um livro pod
 O DER é desenhado usando símbolos específicos. Uma caixa retangular representa uma entidade, com os atributos listados dentro dela. Os relacionamentos são representados por linhas que conectam as entidades, com uma indicação da cardinalidade do relacionamento, ou seja, quantos objetos de uma entidade estão associados a quantos objetos de outra entidade.
 
 ![](../assets/der.png)
+
+
+<figcaption align='center'>
+    <b>Figura 1: Diagrama Entidade Relacionamento</b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+<br>
