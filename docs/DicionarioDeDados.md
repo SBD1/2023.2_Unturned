@@ -4,7 +4,19 @@ Um dicionário de dados em um sistema de banco de dados é um repositório centr
 
 &emsp;&emsp; Para o contexto do nosso projeto, buscamos fazer o dicionário de dados do jogo Unturned, para o projeto de Banco de Dados no primeiro módulo da disciplina.
 
+### Entidade Mapa
 
+![](../assets/DicionarioDados/Mapa.png)
+
+
+### Entidade Cidade
+
+![](../assets/DicionarioDados/Cidade.png)
+
+
+### Entidade Veículo
+
+![](../assets/DicionarioDados/Veiculo.png)
 
 
 ## Fontes
