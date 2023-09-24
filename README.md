@@ -19,6 +19,8 @@ Esse repositório é dedicado a realização dos trabalhos da matéria Sistemas 
 - Módulo 1
   - [DER](docs/DER.md)
   - [MR](docs/MR.md)
+  - [Dicionário de Dados](docs/DicionarioDeDados.md)
+
 
 ## Integrantes do grupo
 
