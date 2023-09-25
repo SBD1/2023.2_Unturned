@@ -146,7 +146,7 @@
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
-### Entidade Fogo
+### Entidade Branca
 ![](../assets/DicionarioDados/Branca.png)
 <figcaption align='center'>
     <b>Figura 19: Branca </b>
