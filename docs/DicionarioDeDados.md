@@ -117,10 +117,10 @@
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
-### Entidade Ferramenta
+### Entidade Ferramentas
 ![](../assets/DicionarioDados/Ferramenta.png)
 <figcaption align='center'>
-    <b>Figura 15: Ferramenta </b>
+    <b>Figura 15: Ferramentas </b>
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
@@ -146,7 +146,7 @@
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
-### Entidade Fogo
+### Entidade Branca
 ![](../assets/DicionarioDados/Branca.png)
 <figcaption align='center'>
     <b>Figura 19: Branca </b>
