@@ -73,3 +73,23 @@ SELECT tipo, COUNT(*) AS quantidade_de_veiculos
 FROM Veiculo
 GROUP BY tipo;
 
+-- Listar Tudo
+SELECT * FROM mapa;
+SELECT * FROM cidade;
+SELECT * FROM veiculo;
+SELECT * FROM terrestre;
+SELECT * FROM aereo;
+SELECT * FROM aquatico;
+SELECT * FROM personagem;
+SELECT * FROM pc;
+SELECT * FROM npc;
+SELECT * FROM instancia;
+SELECT * FROM zumbi;
+SELECT * FROM animal;
+SELECT * FROM inventario;
+SELECT * FROM item;
+SELECT * FROM arma;
+SELECT * FROM ferramenta;
+SELECT * FROM alimento;
+SELECT * FROM fogo;
+SELECT * FROM branca;
