@@ -9,22 +9,27 @@ CREATE TABLE Mapa (
 CREATE TABLE Cidade (
     nome VARCHAR(255) PRIMARY KEY NOT NULL,
     mapa INT NOT NULL,
-    radioatividade INT NOT NULL,
     CONSTRAINT fk_cidade_mapa FOREIGN KEY (mapa) REFERENCES Mapa(idMapa)
+);
+
+-- Tabela Sala 
+CREATE TABLE Sala  (
+    idSala INT PRIMARY KEY,
+    cidade VARCHAR(255),
+    radioatividade INT NOT NULL,
+    CONSTRAINT fk_sala_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome)
 );
 
 -- Tabela Veículo
 CREATE TABLE Veiculo (
-    idVeiculo INT  PRIMARY KEY,
-    cidade VARCHAR(255) NOT NULL,
+    idVeiculo INT PRIMARY KEY,
     tipo VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_veiculo_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
     CONSTRAINT veiculo_tipo_check CHECK (tipo IN ('Aereo', 'Aquatico', 'Terrestre'))
 );
 
 -- Tabela veículo terrestre
 CREATE TABLE Terrestre (
-    idVeiculo INT NOT NULL,
+    idVeiculo INT PRIMARY KEY,
     cidade VARCHAR(255) NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Carro',
     vida INT NOT NULL DEFAULT 100,
@@ -37,7 +42,7 @@ CREATE TABLE Terrestre (
 
 -- Tabela veículo aquático
 CREATE TABLE Aquatico (
-    idVeiculo INT NOT NULL,
+    idVeiculo INT PRIMARY KEY,
     cidade VARCHAR(255) NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Barco',
     vida INT NOT NULL DEFAULT 100,
@@ -50,7 +55,7 @@ CREATE TABLE Aquatico (
 
 -- Tabela veículo aéreo
 CREATE TABLE Aereo (
-    idVeiculo INT NOT NULL,
+    idVeiculo INT PRIMARY KEY,
     cidade VARCHAR(255) NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Aviao',
     vida INT NOT NULL DEFAULT 100,
@@ -64,28 +69,27 @@ CREATE TABLE Aereo (
 -- Tabela Personagem
 CREATE TABLE Personagem (
     idPersonagem INT PRIMARY KEY NOT NULL,
-    cidade VARCHAR(255) NOT NULL,
     tipo VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_personagem_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
     CONSTRAINT personagem_tipo_check CHECK (tipo IN ('NPC', 'PC'))
 );
 
 -- Tabela do player character
 CREATE TABLE PC (
     idPersonagem INT PRIMARY KEY,
+    sala INT,
     nome VARCHAR(255) DEFAULT 'Steve',
     vida INT NOT NULL DEFAULT 100,
     stamina INT NOT NULL DEFAULT 100,
-    CONSTRAINT fk_pc_personagem FOREIGN KEY (idPersonagem) REFERENCES Personagem(idPersonagem)
+    CONSTRAINT fk_pc_personagem FOREIGN KEY (idPersonagem) REFERENCES Personagem(idPersonagem),
+    CONSTRAINT fk_pc_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
 -- Tabela do non player character
 CREATE TABLE NPC (
     idPersonagem INT PRIMARY KEY,
-    vida INT NOT NULL DEFAULT 100,
-    genetica VARCHAR(255) NOT NULL DEFAULT 'Zumbi',
+    tipo_npc VARCHAR(255) NOT NULL DEFAULT 'Zumbi',
     CONSTRAINT fk_npc_personagem FOREIGN KEY (idPersonagem) REFERENCES Personagem(idPersonagem),
-    CONSTRAINT NPC_genetica_check CHECK (genetica IN ('Zumbi', 'Animal'))
+    CONSTRAINT NPC_tipo_check CHECK (tipo_npc IN ('Zumbi', 'Animal'))
 );
 
 -- Tabela do tipo zumbi
@@ -110,14 +114,14 @@ CREATE TABLE Animal (
 CREATE TABLE Instancia (
     idInstancia INT PRIMARY KEY NOT NULL,
     NPC INT NOT NULL,
-    cidade VARCHAR(255) NOT NULL,
+    sala INT NOT NULL,
     CONSTRAINT fk_instancia_npc FOREIGN KEY (NPC) REFERENCES NPC(idPersonagem),
-    CONSTRAINT fk_instancia_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome)
+    CONSTRAINT fk_instancia_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
 -- Tabela do Inventário
 CREATE TABLE Inventario (
-    personagem INT,
+    personagem INT PRIMARY KEY,
     quantidadeItens INT DEFAULT 0,
     maxItens INT DEFAULT 20,
     CONSTRAINT fk_inventario_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
@@ -127,61 +131,68 @@ CREATE TABLE Inventario (
 -- Tabela do Item
 CREATE TABLE Item (
     idItem INT PRIMARY KEY,
-    cidade VARCHAR(255),
-    personagem INT,
+    sala INT,
+    inventario INT,
     tipo VARCHAR(255) DEFAULT 'Alimento',
-    CONSTRAINT fk_item_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
-    CONSTRAINT fk_item_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
+    CONSTRAINT fk_item_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
+    CONSTRAINT fk_item_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
     CONSTRAINT item_tipo_check CHECK (tipo IN ('Ferramenta', 'Alimento', 'Arma'))
 );
 
 -- Tabela das Ferramentas
 CREATE TABLE Ferramenta (
     idItem INT PRIMARY KEY,
-    --tipo VARCHAR(255),
+    sala INT,
+    inventario INT,
     durabilidade INT DEFAULT 100,
-    CONSTRAINT fk_ferramentas_item FOREIGN KEY (idItem) REFERENCES Item(idItem)
+    CONSTRAINT fk_ferramenta_item FOREIGN KEY (idItem) REFERENCES Item(idItem),
+    CONSTRAINT fk_ferramenta_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
+    CONSTRAINT fk_ferramenta_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
 -- Tabela do Alimento
 CREATE TABLE Alimento (
     idItem INT PRIMARY KEY,
-    --tipo VARCHAR(255),
+    sala INT,
+    inventario INT,
     status VARCHAR(255) DEFAULT 'Excelente',
     CONSTRAINT fk_alimento_item FOREIGN KEY (idItem) REFERENCES Item(idItem),
+    CONSTRAINT fk_alimento_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
+    CONSTRAINT fk_alimento_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
     CONSTRAINT alimento_status_check CHECK (status IN ('Excelente', 'Bom', 'Mediano', 'Ruim', 'Pessimo'))
 );
 
 -- Tabela da Arma
 CREATE TABLE Arma (
     idItem INT PRIMARY KEY,
-    --tipo VARCHAR(255),
-    classe VARCHAR(255) DEFAULT 'Fogo',
-    --nome VARCHAR(255) DEFAULT 'Pistola',
-    dano INT DEFAULT '15',
+    tipo_arma VARCHAR(255),
     CONSTRAINT fk_arma_item FOREIGN KEY (idItem) REFERENCES Item(idItem),
-    CONSTRAINT arma_classe_check CHECK (classe IN ('Fogo', 'Branca'))
+    CONSTRAINT arma_tipo_check CHECK (tipo_arma IN ('Fogo', 'Branca'))
 );
 
 -- Tabela de arma de fogo
 CREATE TABLE Fogo (
     idItem INT PRIMARY KEY,
-    --tipo VARCHAR(255),
-    --classe VARCHAR(255),
+    sala INT,
+    inventario INT,
     nome VARCHAR(255),
-    --dano INT,
+    dano INT,
     distancia INT DEFAULT 10,
     capacidadeMunicao INT DEFAULT 15,
-    CONSTRAINT fk_fogo_arma FOREIGN KEY (idItem) REFERENCES Arma(idItem)
+    CONSTRAINT fk_fogo_arma FOREIGN KEY (idItem) REFERENCES Arma(idItem),
+    CONSTRAINT fk_fogo_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
+    CONSTRAINT fk_fogo_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
 -- Tabela de armas brancas
 CREATE TABLE Branca (
     idItem INT PRIMARY KEY,
-    --tipo VARCHAR(255),
-    --classe VARCHAR(255),
+    sala INT,
+    inventario INT,
     nome VARCHAR(255) DEFAULT 'Faca',
-    --dano INT,
+    dano INT,
     material VARCHAR(255) DEFAULT 'Madeira',
-    CONSTRAINT fk_branca_arma FOREIGN KEY (idItem) REFERENCES Arma(idItem)
+    CONSTRAINT fk_branca_arma FOREIGN KEY (idItem) REFERENCES Arma(idItem),
+    CONSTRAINT fk_branca_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
+    CONSTRAINT fk_branca_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
