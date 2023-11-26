@@ -294,7 +294,7 @@ BEGIN
 
 	RETURN NEW;
 END;
-$verifica_pcs$ LANGUAGE plpgsql;
+$verifica_zumbis$ LANGUAGE plpgsql;
 
 CREATE TRIGGER zumbis
 BEFORE INSERT OR UPDATE ON Zumbi
@@ -312,7 +312,7 @@ BEGIN
 
 	RETURN NEW;
 END;
-$verifica_pcs$ LANGUAGE plpgsql;
+$verifica_animais$ LANGUAGE plpgsql;
 
 CREATE TRIGGER animais
 BEFORE INSERT OR UPDATE ON Animal
