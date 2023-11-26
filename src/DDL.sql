@@ -9,6 +9,7 @@ CREATE TABLE Mapa (
 CREATE TABLE Cidade (
     nome VARCHAR(255) PRIMARY KEY NOT NULL,
     mapa INT NOT NULL,
+    nroConstrucoes INT NOT NULL, -- Quantidade de salas
     CONSTRAINT fk_cidade_mapa FOREIGN KEY (mapa) REFERENCES Mapa(idMapa)
 );
 
@@ -30,39 +31,45 @@ CREATE TABLE Veiculo (
 -- Tabela veículo terrestre
 CREATE TABLE Terrestre (
     idVeiculo INT PRIMARY KEY,
-    cidade VARCHAR(255) NOT NULL,
+    -- cidade VARCHAR(255) NOT NULL,
+    sala INT NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Carro',
     vida INT NOT NULL DEFAULT 100,
     numRodas SMALLINT NOT NULL DEFAULT 4,
     combustivel INT NOT NULL DEFAULT 100,
     CONSTRAINT fk_terrestre_veiculo FOREIGN KEY (idVeiculo) REFERENCES Veiculo(idVeiculo),
-    CONSTRAINT fk_terrestre_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    -- CONSTRAINT fk_terrestre_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    CONSTRAINT fk_terrestre_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
     CHECK (vida > 0)
 );
 
 -- Tabela veículo aquático
 CREATE TABLE Aquatico (
     idVeiculo INT PRIMARY KEY,
-    cidade VARCHAR(255) NOT NULL,
+    -- cidade VARCHAR(255) NOT NULL,
+    sala INT NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Barco',
     vida INT NOT NULL DEFAULT 100,
     combustivel INT NOT NULL DEFAULT 100,
     propulsao INT NOT NULL DEFAULT 30,
     CONSTRAINT fk_aquatico_veiculo FOREIGN KEY (idVeiculo) REFERENCES Veiculo(idVeiculo),
-    CONSTRAINT fk_aquatico_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    -- CONSTRAINT fk_aquatico_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    CONSTRAINT fk_aquatico_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
     CHECK (vida > 0)
 );
 
 -- Tabela veículo aéreo
 CREATE TABLE Aereo (
     idVeiculo INT PRIMARY KEY,
-    cidade VARCHAR(255) NOT NULL,
+    -- cidade VARCHAR(255) NOT NULL,
+    sala INT NOT NULL,
     nome VARCHAR(255) NOT NULL DEFAULT 'Aviao',
     vida INT NOT NULL DEFAULT 100,
     combustivel INT NOT NULL DEFAULT 100,
     maxAltitude INT NOT NULL DEFAULT 250,
     CONSTRAINT fk_aereo_veiculo FOREIGN KEY (idVeiculo) REFERENCES Veiculo(idVeiculo),
-    CONSTRAINT fk_aquatico_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    -- CONSTRAINT fk_aquatico_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome),
+    CONSTRAINT fk_aquatico_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
     CHECK (vida > 0)
 );
 
