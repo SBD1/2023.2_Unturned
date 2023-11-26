@@ -69,11 +69,13 @@ BEGIN
         IF FOUND THEN
             DELETE FROM Aquatico WHERE _id = Aquatico.idVeiculo;
             INSERT INTO Aereo VALUES (_id, _sala, _nome, _vida, _combustivel, _maxAltitude);
+            UPDATE Veiculo SET tipo = 'Aereo' WHERE idVeiculo = _id;
         END IF;
         PERFORM * FROM Terrestre WHERE _id = Terrestre.idVeiculo;
         IF FOUND THEN
             DELETE FROM Terrestre WHERE _id = Terrestre.idVeiculo;
             INSERT INTO Aereo VALUES (_id, _sala, _nome, _vida, _combustivel, _maxAltitude);
+            UPDATE Veiculo SET tipo = 'Aereo' WHERE idVeiculo = _id;
         END IF;
         PERFORM * FROM Aereo WHERE _id = Aereo.idVeiculo;
         IF FOUND THEN
@@ -87,11 +89,13 @@ BEGIN
         IF FOUND THEN
             DELETE FROM Aquatico WHERE _id = Aquatico.idVeiculo;
             INSERT INTO Terrestre VALUES (_id, _sala, _nome, _vida, _numRodas, _combustivel);
+            UPDATE Veiculo SET tipo = 'Terrestre' WHERE idVeiculo = _id;
         END IF;
         PERFORM * FROM Aereo WHERE _id = Aereo.idVeiculo;
         IF FOUND THEN
             DELETE FROM Aereo WHERE _id = Aereo.idVeiculo;
             INSERT INTO Terrestre VALUES (_id, _sala, _nome, _vida, _numRodas, _combustivel);
+            UPDATE Veiculo SET tipo = 'Terrestre' WHERE idVeiculo = _id;
         END IF;
         PERFORM * FROM Terrestre WHERE _id = Terrestre.idVeiculo;
         IF FOUND THEN
@@ -105,11 +109,13 @@ BEGIN
         IF FOUND THEN
             DELETE FROM Terrestre WHERE _id = Terrestre.idVeiculo;
             INSERT INTO Aquatico VALUES (_id, _sala, _nome, _vida, _combustivel, _propulsao);
+            UPDATE Veiculo SET tipo = 'Aquatico' WHERE idVeiculo = _id;
         END IF;
         PERFORM * FROM Aereo WHERE _id = Aereo.idVeiculo;
         IF FOUND THEN
             DELETE FROM Aereo WHERE _id = Aereo.idVeiculo;
             INSERT INTO Aquatico VALUES (_id, _sala, _nome, _vida, _combustivel, _propulsao);
+            UPDATE Veiculo SET tipo = 'Aquatico' WHERE idVeiculo = _id ;
         END IF;
         PERFORM * FROM Aquatico WHERE _id = Aquatico.idVeiculo;
         IF FOUND THEN

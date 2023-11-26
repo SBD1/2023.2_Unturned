@@ -8,44 +8,36 @@ VALUES (1, 1, 'Washington'),
 
 
 -- Inserir dados na tabela Cidade
-INSERT INTO Cidade (nome, mapa, radioatividade)
-VALUES ('Seattle', 1, 25),
-       ('Charlottetown', 2, 10),
-       ('Whitehorse', 3, 5),
-       ('Formosa', 4, 100),
-       ('Chicago', 5, 30);
+INSERT INTO Cidade (nome, mapa, nroConstrucoes)
+VALUES ('Seattle', 1, 0),
+       ('Charlottetown', 2, 0),
+       ('Whitehorse', 3, 0),
+       ('Formosa', 4, 0),
+       ('Chicago', 5, 0);
+
+-- Inserir dados na tabela Sala
+INSERT INTO Sala (idSala, cidade, radioatividade)
+VALUES (1, 'Formosa', 30),
+       (2, 'Formosa', 30),
+       (3, 'Whitehorse', 50),
+       (4, 'Chicago', 10),
+       (5, 'Seattle', 90),
+       (6, 'Charlottetown', 0)
  
--- Inserir dados na tabela Veículo
-INSERT INTO Veiculo (idVeiculo, cidade, tipo)
-VALUES (1, 'Seattle', 'Aereo'),
-       (2, 'Charlottetown', 'Terrestre'),
-       (3, 'Whitehorse', 'Aquatico'),
-       (4, 'Formosa', 'Aquatico'),
-       (5, 'Chicago', 'Terrestre');
+-- Para inserir veiculo terrestre
+CALL insere_veiculo(1, 1, 'Ferrari', 100, 100, 4::smallint, NULL::int, NULL::int);
 
--- Inserir os dados na tabela Terrestre
-INSERT INTO Terrestre
-    SELECT idVeiculo, cidade FROM Veiculo
-        WHERE tipo = 'Terrestre';
+-- Para inserir veículo aquático
+CALL insere_veiculo(2, 2, 'Barco', 80, 67, NULL::smallint, 50, NULL::int);
 
-UPDATE Terrestre SET nome = 'Moto', vida = 23, numRodas = 2, combustivel = 80
-    WHERE idVeiculo = 2;
+-- Para inserir veículo aéreo
+CALL insere_veiculo(3, 3, 'Airbus', 90, 97, NULL::smallint, NULL::int, 10000);
 
--- Inserir os dados na tabela Aquatico
-INSERT INTO Aquatico
-    SELECT idVeiculo, cidade FROM Veiculo
-        WHERE tipo = 'Aquatico';
+-- Para dar algum update no veiculo para passar ele para terrestre
+CALL update_veiculo(2, 2, 'Maseratti', 50, 48, 4::smallint, NULL::int, NULL::int);
 
-UPDATE Aquatico SET nome = 'SiriCascudo', vida = 80, combustivel = 70, propulsao = 30
-    WHERE idVeiculo = 3;
-
--- Inserir os dados na tabela Aereo
-INSERT INTO Aereo
-    SELECT idVeiculo, cidade FROM Veiculo
-        WHERE tipo = 'Aereo';
-
-UPDATE Aereo SET nome = 'TucTuc', vida = 75, combustivel = 100, maxAltitude = 3000;
-
+-- Para deletar algum id de veiculo
+CALL removerVeiculo(2);
 -- Inserir dados na tabela Personagem
 INSERT INTO Personagem (idPersonagem, cidade, tipo)
 VALUES (1, 'Seattle', 'NPC'),
