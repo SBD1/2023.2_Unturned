@@ -217,8 +217,8 @@ FOR EACH ROW EXECUTE PROCEDURE verifica_aereos();
 
 -------------------------------------------------------------------------------------------------------------
  
-CREATE OR REPLACE PROCEDURE inserirPersonagem(_id INT, _sala, _nome, _vida, _stamina, _classe, _dano, _especie)
-LANGUAGE plpgsql AS $$;
+CREATE OR REPLACE PROCEDURE inserirPersonagem(_id INT, _sala INT, _nome VARCHAR(255), _vida INT, _stamina INT, _classe VARCHAR(255), _dano INT, _especie VARCHAR(255))
+LANGUAGE plpgsql AS $$
 BEGIN
     IF _id IS NULL THEN
         RAISE EXCEPTION 'Preciso do id para criar o personagem';
@@ -226,10 +226,25 @@ BEGIN
     IF (_nome IS NULL OR _stamina IS NULL) AND (_classe IS NULL AND _dano IS NULL) AND (_especie IS NULL) THEN 
         RAISE EXCEPTION 'Preciso que coloque atributos especificos para eu saber onde guardar as informações';
     END IF;
+    IF ((_classe IS NOT NULL) AND (_especie IS NOT NULL)) THEN
+        RAISE EXCEPTION 'Posso ser ou animal, ou zumbi, não ambos ao mesmo tempo';
+    END IF;
     IF ((_nome IS NOT NULL) OR (stamina IS NOT NULL)) AND (((_classe IS NOT NULL) AND (_dano IS NOT NULL)) OR (_especie IS NOT NULL)) THEN
         RAISE EXCEPTION 'Não posso ser NPC E PC ao mesmo tempo';
     END IF;
-    IF (_nome)
+    IF (_nome IS NOT NULL OR _stamina IS NOT NULL) THEN
+        INSERT INTO PERSONAGEM VALUES (_id, 'PC');
+        INSERT INTO PC VALUES (_id, _sala, _nome, _vida, _stamina);
+    ELSIF (_classe IS NOT NULL) THEN
+        INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
+        INSERT INTO NPC VALUES (_id, 'Zumbi');
+        INSERT INTO Zumbi VALUES (_id, _vida, _classe, _dano);
+    ELSIF (_especie IS NOT NULL) THEN
+        INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
+        INSERT INTO NPC VALUES (_id, 'Animal');
+        INSERT INTO Animal VALUES (_id, _vida, _especie);
+    END IF;
+END $$;
 
 
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
