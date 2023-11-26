@@ -22,6 +22,7 @@ CREATE TRIGGER count_numero_salas
 AFTER INSERT OR UPDATE OR DELETE ON Sala 
 FOR EACH ROW EXECUTE FUNCTION count_numero_salas();
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE PROCEDURE insere_veiculo(_id INT, _sala INT, _nome VARCHAR(255), _vida INT, _combustivel INT, _numRodas SMALLINT, _propulsao INT, _maxAltitude INT)
 LANGUAGE plpgsql AS $$
@@ -119,4 +120,315 @@ BEGIN
     END IF;
 END $$;
 
+CREATE OR REPLACE PROCEDURE removerVeiculo(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN  
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso de um id válido';
+    ELSE
+        PERFORM * FROM Veiculo WHERE Veiculo.idVeiculo = _id;
+        IF FOUND THEN
+            PERFORM * FROM Aquatico WHERE Aquatico.idVeiculo = _id;
+            IF FOUND THEN 
+                DELETE FROM Aquatico WHERE Aquatico.idVeiculo = _id;
+            END IF;
+            PERFORM * FROM Terrestre WHERE Terrestre.idVeiculo = _id;
+            IF FOUND THEN
+                DELETE FROM Terrestre WHERE Terrestre.idVeiculo = _id;
+            END IF;
+            PERFORM * FROM Aereo WHERE Aereo.idVeiculo = _id;
+            IF FOUND THEN
+                DELETE FROM Aereo WHERE Aereo.idVeiculo = _id;
+            END IF;
+            DELETE FROM Veiculo WHERE Veiculo.idVeiculo = _id;
+        ELSE 
+            RAISE EXCEPTION 'Esse id não existe';
+        END IF;
+    END IF;
+END $$;
+       
+CREATE OR REPLACE FUNCTION verifica_terrestres() RETURNS TRIGGER AS $verifica_terrestres$
+
+BEGIN
+
+	PERFORM * FROM Aquatico WHERE Aquatico.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo aquático com esse ID';
+	END IF;
+
+    PERFORM * FROM Aereo WHERE Aereo.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo aéreo com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_terrestres$ LANGUAGE plpgsql;
+
+CREATE TRIGGER terrestres
+BEFORE INSERT OR UPDATE ON Terrestre
+FOR EACH ROW EXECUTE PROCEDURE verifica_terrestres();
+
+
+CREATE OR REPLACE FUNCTION verifica_aquaticos() RETURNS TRIGGER AS $verifica_aquaticos$
+
+BEGIN
+
+	PERFORM * FROM Terrestre WHERE Terrestre.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo terrestre com esse ID';
+	END IF;
+
+    PERFORM * FROM Aereo WHERE Aereo.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo aéreo com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_aquaticos$ LANGUAGE plpgsql;
+
+CREATE TRIGGER aquaticos
+BEFORE INSERT OR UPDATE ON Aquatico
+FOR EACH ROW EXECUTE PROCEDURE verifica_aquaticos();
+
+
+CREATE OR REPLACE FUNCTION verifica_aereos() RETURNS TRIGGER AS $verifica_aereos$
+
+BEGIN
+
+	PERFORM * FROM Terrestre WHERE Terrestre.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo terrestre com esse ID';
+	END IF;
+
+    PERFORM * FROM Aquatico WHERE Aquatico.idVeiculo = New.idVeiculo;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um veículo aquático com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_aereos$ LANGUAGE plpgsql;
+
+CREATE TRIGGER aereos
+BEFORE INSERT OR UPDATE ON Aereo
+FOR EACH ROW EXECUTE PROCEDURE verifica_aereos();
+
+-------------------------------------------------------------------------------------------------------------
+ 
+CREATE OR REPLACE PROCEDURE inserirPersonagem(_id INT, _sala, _nome, _vida, _stamina, _classe, _dano, _especie)
+LANGUAGE plpgsql AS $$;
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para criar o personagem';
+    END IF;
+    IF (_nome IS NULL OR _stamina IS NULL) AND (_classe IS NULL AND _dano IS NULL) AND (_especie IS NULL) THEN 
+        RAISE EXCEPTION 'Preciso que coloque atributos especificos para eu saber onde guardar as informações';
+    END IF;
+    IF ((_nome IS NOT NULL) OR (stamina IS NOT NULL)) AND (((_classe IS NOT NULL) AND (_dano IS NOT NULL)) OR (_especie IS NOT NULL)) THEN
+        RAISE EXCEPTION 'Não posso ser NPC E PC ao mesmo tempo';
+    END IF;
+    IF (_nome)
+
+
+CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
+
+BEGIN
+
+	PERFORM * FROM PC WHERE PC.idPersonagem = New.idPersonagem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um PC com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_npcs$ LANGUAGE plpgsql;
+
+CREATE TRIGGER npcs
+BEFORE INSERT OR UPDATE ON NPC
+FOR EACH ROW EXECUTE PROCEDURE verifica_npcs();
+
+
+CREATE OR REPLACE FUNCTION verifica_pcs() RETURNS TRIGGER AS $verifica_pcs$
+
+BEGIN
+
+	PERFORM * FROM PC WHERE NPC.idPersonagem = New.idPersonagem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um NPC com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_pcs$ LANGUAGE plpgsql;
+
+CREATE TRIGGER pcs
+BEFORE INSERT OR UPDATE ON PC
+FOR EACH ROW EXECUTE PROCEDURE verifica_pcs();
+
+
+CREATE OR REPLACE FUNCTION verifica_zumbis() RETURNS TRIGGER AS $verifica_zumbis$
+
+BEGIN
+
+	PERFORM * FROM Animal WHERE Animal.idPersonagem = New.idPersonagem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um Animal com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_pcs$ LANGUAGE plpgsql;
+
+CREATE TRIGGER zumbis
+BEFORE INSERT OR UPDATE ON Zumbi
+FOR EACH ROW EXECUTE PROCEDURE verifica_zumbis();
+
+
+CREATE OR REPLACE FUNCTION verifica_animais() RETURNS TRIGGER AS $verifica_animais$
+
+BEGIN
+
+	PERFORM * FROM Zumbi WHERE Zumbi.idPersonagem = New.idPersonagem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um Zumbi com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_pcs$ LANGUAGE plpgsql;
+
+CREATE TRIGGER animais
+BEFORE INSERT OR UPDATE ON Animal
+FOR EACH ROW EXECUTE PROCEDURE verifica_animais();
+
+------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION verifica_ferramentas() RETURNS TRIGGER AS $verifica_ferramentas$
+
+BEGIN
+
+	PERFORM * FROM Alimento WHERE Alimento.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um Alimento com esse ID';
+	END IF;
+
+    PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_ferramentas$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ferramentas
+BEFORE INSERT OR UPDATE ON Ferramenta
+FOR EACH ROW EXECUTE PROCEDURE verifica_ferramentas();
+
+
+CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
+
+BEGIN
+
+	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
+	END IF;
+
+    PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_alimentos$ LANGUAGE plpgsql;
+
+CREATE TRIGGER alimentos
+BEFORE INSERT OR UPDATE ON Alimento
+FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
+
+
+CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
+
+BEGIN
+
+	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
+	END IF;
+
+    PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_alimentos$ LANGUAGE plpgsql;
+
+CREATE TRIGGER alimentos
+BEFORE INSERT OR UPDATE ON Alimento
+FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
+
+
+CREATE OR REPLACE FUNCTION verifica_armas() RETURNS TRIGGER AS $verifica_armas$
+
+BEGIN
+
+	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
+	END IF;
+
+    PERFORM * FROM Alimento WHERE Alimento.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe um Alimento com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_armas$ LANGUAGE plpgsql;
+
+CREATE TRIGGER armas
+BEFORE INSERT OR UPDATE ON Arma
+FOR EACH ROW EXECUTE PROCEDURE verifica_armas();
+
+
+CREATE OR REPLACE FUNCTION verifica_fogos() RETURNS TRIGGER AS $verifica_fogos$
+
+BEGIN
+
+	PERFORM * FROM Branca WHERE Branca.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma arma Branca com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_fogos$ LANGUAGE plpgsql;
+
+CREATE TRIGGER fogos
+BEFORE INSERT OR UPDATE ON Fogo
+FOR EACH ROW EXECUTE PROCEDURE verifica_fogos();
+
+
+CREATE OR REPLACE FUNCTION verifica_brancas() RETURNS TRIGGER AS $verifica_brancas$
+
+BEGIN
+
+	PERFORM * FROM Fogo WHERE Fogos.idItem = New.idItem;
+	IF FOUND THEN
+		RAISE EXCEPTION 'ERRO: Já existe uma arma de Fogo com esse ID';
+	END IF;
+
+	RETURN NEW;
+END;
+$verifica_brancas$ LANGUAGE plpgsql;
+
+CREATE TRIGGER brancas
+BEFORE INSERT OR UPDATE ON Branca
+FOR EACH ROW EXECUTE PROCEDURE verifica_brancas();
 
