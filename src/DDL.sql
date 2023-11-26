@@ -9,7 +9,7 @@ CREATE TABLE Mapa (
 CREATE TABLE Cidade (
     nome VARCHAR(255) PRIMARY KEY NOT NULL,
     mapa INT NOT NULL,
-    nroConstrucoes INT NOT NULL, -- Quantidade de salas
+    nroConstrucoes INT NOT NULL DEFAULT 0, -- Quantidade de salas
     CONSTRAINT fk_cidade_mapa FOREIGN KEY (mapa) REFERENCES Mapa(idMapa)
 );
 
