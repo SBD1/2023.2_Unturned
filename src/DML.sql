@@ -55,6 +55,12 @@ CALL inserirPersonagem(2, NULL, NULL, 100, NULL, 'Andarilho', 50, NULL);
 -- Para inserir um animal por procedure
 CALL inserirPersonagem(3, NULL, NULL, 100, NULL, NULL, NULL, 'Vaca');
 
+-- Para fazer um update na tabela Animal, mudando o necessário, pode mudar apenas um atributo se quiser
+CALL updateAnimal(3, 65, 'Urubu');
+
+-- Para fazer update na tabela Zumbi, mudando o necessário, pode mudar apenas um atributo se quiser
+CALL updateZumbi(2, 30, 'Corredor', 20);
+
 -- Inserir dados na tabela Instancia
 INSERT INTO Instancia (idInstancia, NPC, cidade)
     VALUES (1, 1, 'Formosa'),

@@ -252,6 +252,49 @@ BEGIN
     END IF;
 END $$;
 
+CREATE OR REPLACE PROCEDURE updateZumbi(_id INT, _vida INT, _classe VARCHAR(255), _dano INT)
+LANGUAGE plpgsql AS $$
+BEGIN  
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para fazer o update do zumbi';
+    END IF;
+    IF _vida IS NULL AND _classe IS NULL AND _dano IS NULL THEN
+        RAISE EXCEPTION 'Preciso de todas os atributos específicos para atualizar o zumbi';
+    END IF;
+    IF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET vida = _vida, classe = _classe, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET vida =_vida, classe =_classe WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET vida = _vida, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NULL AND _classe IS NOT NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET classe = _classe, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _vida IS  NULL AND _classe IS NOT NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET classe = _classe WHERE idPersonagem = _id;
+    ELSIF _vida IS  NULL AND _classe IS NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET dano = _dano WHERE idPersonagem = _id;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE updateAnimal(_id INT, _vida INT, _especie VARCHAR(255))
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para fazer o update do animal';
+    END IF;
+    IF _vida IS NULL AND _especie IS NULL THEN
+        RAISE EXCEPTION 'Preciso dos atributos específicos para fazer o update';
+    END IF;
+    IF _vida IS NOT NULL AND _especie IS NOT NULL THEN
+        UPDATE Animal SET vida = _vida, especie = _especie WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _especie IS NULL THEN
+        UPDATE Animal SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _vida IS NULL AND _especie IS NOT NULL THEN
+        UPDATE Animal SET especie = _especie WHERE idPersonagem = _id;
+    END IF;
+END $$;
 
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
 
