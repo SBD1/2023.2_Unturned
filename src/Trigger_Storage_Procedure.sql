@@ -229,13 +229,13 @@ BEGIN
     IF _id IS NULL THEN
         RAISE EXCEPTION 'Preciso do id para criar o personagem';
     END IF;
-    IF _nome IS NULL OR _stamina IS NULL AND _classe IS NULL AND _dano IS NULL AND _especie IS NULL THEN 
+    IF _nome IS NULL AND _stamina IS NULL AND _classe IS NULL AND _dano IS NULL AND _especie IS NULL THEN 
         RAISE EXCEPTION 'Preciso que coloque atributos especificos para eu saber onde guardar as informações';
     END IF;
     IF _classe IS NOT NULL AND _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Posso ser ou animal, ou zumbi, não ambos ao mesmo tempo';
     END IF;
-    IF _nome IS NOT NULL OR _stamina IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL OR _especie IS NOT NULL THEN
+    IF _nome IS NOT NULL AND _stamina IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL AND _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Não posso ser NPC E PC ao mesmo tempo';
     END IF;
     IF _nome IS NOT NULL OR _stamina IS NOT NULL THEN

@@ -46,47 +46,14 @@ VALUES (1, 'Seattle', 'NPC'),
        (4, 'Formosa', 'PC'),
        (5, 'Chicago', 'NPC');
 
--- Inserir dados na tabela PC
-INSERT INTO PC(idPersonagem)
-    SELECT idPersonagem FROM Personagem
-        WHERE tipo = 'PC';
+-- Para inserir um PC por procedure
+CALL inserirPersonagem(1, 1, 'Joao', 100, 100, NULL, NULL, NULL);
 
-UPDATE PC SET nome = 'Messi', vida = 75, stamina = 90
-    WHERE idPersonagem = 2;
-UPDATE PC SET nome = 'CristianoRonaldo', vida = 90, stamina = 100
-    WHERE idPersonagem = 4;
+-- Para inserir um zumbi por procedure
+CALL inserirPersonagem(2, NULL, NULL, 100, NULL, 'Andarilho', 50, NULL);
 
--- Inserir dados na tabela NPC
-INSERT INTO NPC(idPersonagem)
-    SELECT idPersonagem FROM Personagem
-        WHERE tipo = 'NPC';
-
-UPDATE NPC SET vida = 90, genetica = 'Animal'
-    WHERE idPersonagem = 1;
-
-UPDATE NPC SET vida = 80, genetica = 'Zumbi'
-    WHERE idPersonagem = 3;
-
-UPDATE NPC SET vida = 77, genetica = 'Animal'
-    WHERE idPersonagem = 5;
-
--- Inserir dados na tabela Zumbi
-INSERT INTO Zumbi(idPersonagem)
-    SELECT idPersonagem FROM NPC
-        WHERE genetica = 'Zumbi';
-
-UPDATE Zumbi SET vida = 90, classe = 'Corredor', dano = 100
-    WHERE idPersonagem = 3;
-
-INSERT INTO Animal(idPersonagem)
-    SELECT idPersonagem FROM NPC
-        WHERE genetica = 'Animal';
-
-UPDATE Animal SET vida = 100, especie = 'Vaca'
-    WHERE idPersonagem = 1;
-
-UPDATE Animal SET vida = 100, especie = 'Camelo'
-    WHERE idPersonagem = 5;
+-- Para inserir um animal por procedure
+CALL inserirPersonagem(3, NULL, NULL, 100, NULL, NULL, NULL, 'Vaca');
 
 -- Inserir dados na tabela Instancia
 INSERT INTO Instancia (idInstancia, NPC, cidade)
