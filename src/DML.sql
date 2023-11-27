@@ -66,8 +66,14 @@ CALL updatePC(1, 2,'Joao', 100, 100)
 CALL updatePC(1, NULL,'Mauricio', 70, 50)
 CALL updatePC(1, NULL,NULL, NULL, 50)
 
--- Para deletar um PC
+-- Para deletar um PC com um id eistente
 CALL deletePC(1);
+
+-- Para deletar um Zumbi com um id existente
+CALL deleteZumbi(1);
+
+-- Para deletar um Animal com um id existente
+CALL deleteAnimal(1);
 
 -- Inserir dados na tabela Instancia
 INSERT INTO Instancia (idInstancia, NPC, cidade)

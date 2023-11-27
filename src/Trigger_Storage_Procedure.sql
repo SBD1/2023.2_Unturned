@@ -346,6 +346,43 @@ BEGIN
     END IF;
 END $$;
 
+CREATE OR REPLACE PROCEDURE deleteZumbi(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do Zumbi para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM Zumbi WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM Instancia WHERE NPC = _id;
+            DELETE FROM Zumbi WHERE idPersonagem = _id;
+            DELETE FROM NPC WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse Zumbi pois ele não existe';
+        END IF;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE deleteAnimal(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do Animal para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM Animal WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM Animal WHERE idPersonagem = _id;
+            DELETE FROM NPC WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse Animal pois ele não existe';
+        END IF;
+    END IF;
+END $$;
+
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
 
 BEGIN
