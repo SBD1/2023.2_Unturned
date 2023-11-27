@@ -66,6 +66,8 @@ CALL updatePC(1, 2,'Joao', 100, 100)
 CALL updatePC(1, NULL,'Mauricio', 70, 50)
 CALL updatePC(1, NULL,NULL, NULL, 50)
 
+-- Para deletar um PC
+CALL deletePC(1);
 
 -- Inserir dados na tabela Instancia
 INSERT INTO Instancia (idInstancia, NPC, cidade)

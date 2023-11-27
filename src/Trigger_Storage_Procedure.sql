@@ -326,12 +326,25 @@ BEGIN
     END IF;
 END $$; 
 
-
-
-    
-
-
-
+CREATE OR REPLACE PROCEDURE deletePC(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do PC para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM PC WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM PC WHERE idPersonagem = _id;
+            DELETE FROM Inventario WHERE personagem = _id;
+            DELETE FROM Missao WHERE idPersonagem = _id;
+            DELETE FROM Criador WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse PC pois ele não existe';
+        END IF;
+    END IF;
+END $$;
 
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
 
