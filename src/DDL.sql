@@ -126,6 +126,37 @@ CREATE TABLE Instancia (
     CONSTRAINT fk_instancia_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
+-- Tabela de missão
+CREATE TABLE Missao(
+    idMissao INT PRIMARY KEY,
+    idPersonagem INT NOT NULL,
+    Descricao VARCHAR(255),
+    Recompensa VARCHAR(255),
+    Estado VARCHAR(255),
+    CONSTRAINT check_estado_missao CHECK (Estado IN ('Doing', 'Done')),
+    CONSTRAINT fk_personagem_missao FOREIGN KEY (idPersonagem) REFERENCES PC(idPersonagem) -- Pode ser Personagem em vez de PC
+);
+
+-- Tabela do criador
+CREATE TABLE Criador(
+    idCriador INT PRIMARY KEY,
+    idPersonagem INT NOT NULL,
+    nome VARCHAR(255),
+    CONSTRAINT fk_personagem_missao FOREIGN KEY (idPersonagem) REFERENCES PC(idPersonagem) -- Pode ser Personagem em vez de PC
+);
+
+-- Tabela da receita
+CREATE TABLE Receita(
+    idReceita INT PRIMARY KEY,
+    idCriador INT NOT NULL,
+    idItem INT NOT NULL,
+    Resultado VARCHAR(255),
+    Requisitos VARCHAR(255),
+    TempoCriacao INT NOT NULL,
+    CONSTRAINT fk_criador_receita FOREIGN KEY (idCriador) REFERENCES Criador(idCriador),
+    CONSTRAINT fk_item_receita FOREIGN KEY (idItem) REFERENCES Item(idItem)
+);
+
 -- Tabela do Inventário
 CREATE TABLE Inventario (
     personagem INT PRIMARY KEY,
