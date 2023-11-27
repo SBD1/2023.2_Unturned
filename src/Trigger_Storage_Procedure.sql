@@ -296,6 +296,43 @@ BEGIN
     END IF;
 END $$;
 
+CREATE OR REPLACE PROCEDURE updatePC(_id INT, _sala INT, _nome VARCHAR(255), _vida INT, _stamina INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para dar o update no PC';
+    END IF;
+    IF _sala IS NULL AND _nome IS NULL AND _vida IS NULL AND _stamina IS NULL THEN
+        RAISE EXCEPTION 'Preciso de ao menos um atributo específico para fazer o update';
+    END IF;
+    IF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, vida = _vida WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS  NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET nome = _nome, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL THEN
+        UPDATE PC SET sala = _sala WHERE idPersonagem = _id;
+    ELSIF _nome IS NOT NULL THEN
+        UPDATE PC SET nome = _nome WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL THEN
+        UPDATE PC SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _stamina IS NOT NULL THEN
+        UPDATE PC SET stamina = _stamina WHERE idPersonagem = _id;
+    END IF;
+END $$; 
+
+
+
+    
+
+
+
+
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
 
 BEGIN

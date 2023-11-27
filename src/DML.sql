@@ -61,6 +61,12 @@ CALL updateAnimal(3, 65, 'Urubu');
 -- Para fazer update na tabela Zumbi, mudando o necessário, pode mudar apenas um atributo se quiser
 CALL updateZumbi(2, 30, 'Corredor', 20);
 
+-- Para fazer update na tabela PC, mudando o necessário, pode mudar os 4 ou 3 ou 1 atributos especificos 
+CALL updatePC(1, 2,'Joao', 100, 100)
+CALL updatePC(1, NULL,'Mauricio', 70, 50)
+CALL updatePC(1, NULL,NULL, NULL, 50)
+
+
 -- Inserir dados na tabela Instancia
 INSERT INTO Instancia (idInstancia, NPC, cidade)
     VALUES (1, 1, 'Formosa'),
