@@ -229,23 +229,23 @@ BEGIN
     IF _id IS NULL THEN
         RAISE EXCEPTION 'Preciso do id para criar o personagem';
     END IF;
-    IF (_nome IS NULL OR _stamina IS NULL) AND (_classe IS NULL AND _dano IS NULL) AND (_especie IS NULL) THEN 
+    IF _nome IS NULL OR _stamina IS NULL AND _classe IS NULL AND _dano IS NULL AND _especie IS NULL THEN 
         RAISE EXCEPTION 'Preciso que coloque atributos especificos para eu saber onde guardar as informações';
     END IF;
-    IF ((_classe IS NOT NULL) AND (_especie IS NOT NULL)) THEN
+    IF _classe IS NOT NULL AND _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Posso ser ou animal, ou zumbi, não ambos ao mesmo tempo';
     END IF;
-    IF ((_nome IS NOT NULL) OR (stamina IS NOT NULL)) AND (((_classe IS NOT NULL) AND (_dano IS NOT NULL)) OR (_especie IS NOT NULL)) THEN
+    IF _nome IS NOT NULL OR _stamina IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL OR _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Não posso ser NPC E PC ao mesmo tempo';
     END IF;
-    IF (_nome IS NOT NULL OR _stamina IS NOT NULL) THEN
+    IF _nome IS NOT NULL OR _stamina IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'PC');
         INSERT INTO PC VALUES (_id, _sala, _nome, _vida, _stamina);
-    ELSIF (_classe IS NOT NULL) THEN
+    ELSIF _classe IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
         INSERT INTO NPC VALUES (_id, 'Zumbi');
         INSERT INTO Zumbi VALUES (_id, _vida, _classe, _dano);
-    ELSIF (_especie IS NOT NULL) THEN
+    ELSIF _especie IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
         INSERT INTO NPC VALUES (_id, 'Animal');
         INSERT INTO Animal VALUES (_id, _vida, _especie);
@@ -275,7 +275,7 @@ CREATE OR REPLACE FUNCTION verifica_pcs() RETURNS TRIGGER AS $verifica_pcs$
 
 BEGIN
 
-	PERFORM * FROM PC WHERE NPC.idPersonagem = New.idPersonagem;
+	PERFORM * FROM NPC WHERE NPC.idPersonagem = New.idPersonagem;
 	IF FOUND THEN
 		RAISE EXCEPTION 'ERRO: Já existe um NPC com esse ID';
 	END IF;
