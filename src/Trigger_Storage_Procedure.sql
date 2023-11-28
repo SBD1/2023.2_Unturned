@@ -261,6 +261,10 @@ BEGIN
     IF _vida IS NULL AND _classe IS NULL AND _dano IS NULL THEN
         RAISE EXCEPTION 'Preciso de todas os atributos específicos para atualizar o zumbi';
     END IF;
+    PERFORM * FROM Zumbi WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela Zumbi para fazer o update';
+    END IF;
     IF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL THEN
         UPDATE Zumbi SET vida = _vida, classe = _classe, dano = _dano WHERE idPersonagem = _id;
     ELSIF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NULL THEN
@@ -287,6 +291,10 @@ BEGIN
     IF _vida IS NULL AND _especie IS NULL THEN
         RAISE EXCEPTION 'Preciso dos atributos específicos para fazer o update';
     END IF;
+    PERFORM * FROM Animal WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela Animal para fazer o update';
+    END IF;
     IF _vida IS NOT NULL AND _especie IS NOT NULL THEN
         UPDATE Animal SET vida = _vida, especie = _especie WHERE idPersonagem = _id;
     ELSIF _vida IS NOT NULL AND _especie IS NULL THEN
@@ -304,6 +312,10 @@ BEGIN
     END IF;
     IF _sala IS NULL AND _nome IS NULL AND _vida IS NULL AND _stamina IS NULL THEN
         RAISE EXCEPTION 'Preciso de ao menos um atributo específico para fazer o update';
+    END IF;
+    PERFORM * FROM PC WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela PC para fazer o update';
     END IF;
     IF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
         UPDATE PC SET sala = _sala, nome = _nome, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
