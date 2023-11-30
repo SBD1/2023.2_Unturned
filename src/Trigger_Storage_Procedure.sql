@@ -514,27 +514,27 @@ BEFORE INSERT OR UPDATE ON Alimento
 FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
 
 
-CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
+-- CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
 
-BEGIN
+-- BEGIN
 
-	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
-	IF FOUND THEN
-		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
-	END IF;
+-- 	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
+-- 	IF FOUND THEN
+-- 		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
+-- 	END IF;
 
-    PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
-	IF FOUND THEN
-		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
-	END IF;
+--     PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
+-- 	IF FOUND THEN
+-- 		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
+-- 	END IF;
 
-	RETURN NEW;
-END;
-$verifica_alimentos$ LANGUAGE plpgsql;
+-- 	RETURN NEW;
+-- END;
+-- $verifica_alimentos$ LANGUAGE plpgsql;
 
-CREATE TRIGGER alimentos
-BEFORE INSERT OR UPDATE ON Alimento
-FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
+-- CREATE TRIGGER alimentos
+-- BEFORE INSERT OR UPDATE ON Alimento
+-- FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
 
 
 CREATE OR REPLACE FUNCTION verifica_armas() RETURNS TRIGGER AS $verifica_armas$
@@ -582,7 +582,7 @@ CREATE OR REPLACE FUNCTION verifica_brancas() RETURNS TRIGGER AS $verifica_branc
 
 BEGIN
 
-	PERFORM * FROM Fogo WHERE Fogos.idItem = New.idItem;
+	PERFORM * FROM Fogo WHERE Fogo.idItem = New.idItem;
 	IF FOUND THEN
 		RAISE EXCEPTION 'ERRO: Já existe uma arma de Fogo com esse ID';
 	END IF;
@@ -594,4 +594,3 @@ $verifica_brancas$ LANGUAGE plpgsql;
 CREATE TRIGGER brancas
 BEFORE INSERT OR UPDATE ON Branca
 FOR EACH ROW EXECUTE PROCEDURE verifica_brancas();
-
