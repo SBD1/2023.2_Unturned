@@ -594,3 +594,173 @@ $verifica_brancas$ LANGUAGE plpgsql;
 CREATE TRIGGER brancas
 BEFORE INSERT OR UPDATE ON Branca
 FOR EACH ROW EXECUTE PROCEDURE verifica_brancas();
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+-- Procedimento para inserir um novo 'Item'
+CREATE OR REPLACE PROCEDURE inserirItem(_idItem INT, _tipo VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do item é necessário para a criação.';
+    END IF;
+    IF _tipo IS NULL THEN
+        RAISE EXCEPTION 'O tipo do item é necessário para a criação.';
+    END IF;
+    INSERT INTO Item(idItem, tipo)
+    VALUES (_idItem, _tipo);
+END $$;
+
+-- Procedimento para inserir uma nova 'Ferramenta'
+CREATE OR REPLACE PROCEDURE inserirFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    PERFORM inserirItem(_idItem, 'Ferramenta');
+    INSERT INTO Ferramenta(idItem, sala, inventario, durabilidade)
+    VALUES (_idItem, _sala, _inventario, _durabilidade);
+END $$;
+
+-- Procedimento para inserir um novo 'Alimento'
+CREATE OR REPLACE PROCEDURE inserirAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    PERFORM inserirItem(_idItem, 'Alimento');
+    INSERT INTO Alimento(idItem, sala, inventario, status)
+    VALUES (_idItem, _sala, _inventario, _status);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma'
+CREATE OR REPLACE PROCEDURE inserirArma(_idItem INT, _tipo_arma VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    CALL inserirItem(_idItem, 'Arma');
+    INSERT INTO Arma(idItem, tipo_arma)
+    VALUES (_idItem, _tipo_arma);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma Branca'
+CREATE OR REPLACE PROCEDURE inserirBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    CALL inserirArma(_idItem, 'Branca');
+    INSERT INTO Branca(idItem, sala, inventario, nome, dano, material)
+    VALUES (_idItem, _sala, _inventario, _nome, _dano, _material);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE inserirFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    PERFORM inserirArma(_idItem, 'Fogo');
+    INSERT INTO Fogo(idItem, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+    VALUES (_idItem, _sala, _inventario, _nome, _dano, _distancia, _capacidadeMunicao);
+END $$;
+
+-- Procedimento para atualizar um 'Item'
+CREATE OR REPLACE PROCEDURE atualizarItem(_idItem INT, _tipo VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do item é necessário para atualização.';
+    END IF;
+    UPDATE Item SET tipo = _tipo WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar um 'Item'
+CREATE OR REPLACE PROCEDURE deletarItem(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do item é necessário para deleção.';
+    END IF;
+    DELETE FROM Item WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para atualizar uma 'Ferramenta'
+CREATE OR REPLACE PROCEDURE atualizarFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE Ferramenta SET sala = _sala, inventario = _inventario, durabilidade = _durabilidade WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Ferramenta'
+CREATE OR REPLACE PROCEDURE deletarFerramenta(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    DELETE FROM Ferramenta WHERE idItem = _idItem;
+    PERFORM deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar um 'Alimento'
+CREATE OR REPLACE PROCEDURE atualizarAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar um 'Alimento'
+CREATE OR REPLACE PROCEDURE deletarAlimento(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    DELETE FROM Alimento WHERE idItem = _idItem;
+    PERFORM deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma'
+CREATE OR REPLACE PROCEDURE atualizarArma(_idItem INT, _tipo_arma VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE Arma SET tipo_arma = _tipo_arma WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma'
+CREATE OR REPLACE PROCEDURE deletarArma(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    DELETE FROM Arma WHERE idItem = _idItem;
+    PERFORM deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma Branca'
+CREATE OR REPLACE PROCEDURE atualizarBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE Branca SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, material = _material WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma Branca'
+CREATE OR REPLACE PROCEDURE deletarBranca(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    DELETE FROM Branca WHERE idItem = _idItem;
+    PERFORM deletarArma(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE atualizarFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE Fogo SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, distancia = _distancia, capacidadeMunicao = _capacidadeMunicao WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE deletarFogo(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    DELETE FROM Fogo WHERE idItem = _idItem;
+    PERFORM deletarArma(_idItem);
+END $$;
