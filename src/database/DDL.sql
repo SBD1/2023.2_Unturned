@@ -145,6 +145,13 @@ CREATE TABLE Criador(
     CONSTRAINT fk_personagem_missao FOREIGN KEY (idPersonagem) REFERENCES PC(idPersonagem) -- Pode ser Personagem em vez de PC
 );
 
+-- Tabela do Item
+CREATE TABLE Item (
+    idItem INT PRIMARY KEY,
+    tipo VARCHAR(255) DEFAULT 'Alimento',
+    CONSTRAINT item_tipo_check CHECK (tipo IN ('Ferramenta', 'Alimento', 'Arma'))
+);
+
 -- Tabela da receita
 CREATE TABLE Receita(
     idReceita INT PRIMARY KEY,
@@ -164,17 +171,6 @@ CREATE TABLE Inventario (
     maxItens INT DEFAULT 20,
     CONSTRAINT fk_inventario_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
     CONSTRAINT inventario_quantidadeItem_check CHECK (quantidadeItens < maxItens)
-);
-
--- Tabela do Item
-CREATE TABLE Item (
-    idItem INT PRIMARY KEY,
-    sala INT,
-    inventario INT,
-    tipo VARCHAR(255) DEFAULT 'Alimento',
-    CONSTRAINT fk_item_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
-    CONSTRAINT fk_item_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
-    CONSTRAINT item_tipo_check CHECK (tipo IN ('Ferramenta', 'Alimento', 'Arma'))
 );
 
 -- Tabela das Ferramentas
