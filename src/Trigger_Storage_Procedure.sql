@@ -607,6 +607,12 @@ BEGIN
     IF _tipo IS NULL THEN
         RAISE EXCEPTION 'O tipo do item é necessário para a criação.';
     END IF;
+
+    -- Verifica se o tipo do item é um dos três tipos permitidos
+    IF _tipo NOT IN ('Ferramenta', 'Alimento', 'Arma') THEN
+        RAISE EXCEPTION 'O tipo do item deve ser Ferramenta, Alimento ou Arma.';
+    END IF;
+
     INSERT INTO Item(idItem, tipo)
     VALUES (_idItem, _tipo);
 END $$;
