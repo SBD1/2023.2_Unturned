@@ -607,6 +607,12 @@ BEGIN
     IF _tipo IS NULL THEN
         RAISE EXCEPTION 'O tipo do item é necessário para a criação.';
     END IF;
+
+    -- Verifica se o tipo do item é um dos três tipos permitidos
+    IF _tipo NOT IN ('Ferramenta', 'Alimento', 'Arma') THEN
+        RAISE EXCEPTION 'O tipo do item deve ser Ferramenta, Alimento ou Arma.';
+    END IF;
+
     INSERT INTO Item(idItem, tipo)
     VALUES (_idItem, _tipo);
 END $$;
@@ -615,6 +621,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE inserirFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma ferramenta.';
+    END IF;
+
     CALL inserirItem(_idItem, 'Ferramenta');
     INSERT INTO Ferramenta(idItem, sala, inventario, durabilidade)
     VALUES (_idItem, _sala, _inventario, _durabilidade);
@@ -624,6 +634,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE inserirAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir um alimento.';
+    END IF;
+
     CALL inserirItem(_idItem, 'Alimento');
     INSERT INTO Alimento(idItem, sala, inventario, status)
     VALUES (_idItem, _sala, _inventario, _status);
@@ -633,6 +647,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE inserirArma(_idItem INT, _tipo_arma VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _tipo_arma IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma.';
+    END IF;
+
     CALL inserirItem(_idItem, 'Arma');
     INSERT INTO Arma(idItem, tipo_arma)
     VALUES (_idItem, _tipo_arma);
@@ -642,6 +660,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE inserirBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _material IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma branca.';
+    END IF;
+
     CALL inserirArma(_idItem, 'Branca');
     INSERT INTO Branca(idItem, sala, inventario, nome, dano, material)
     VALUES (_idItem, _sala, _inventario, _nome, _dano, _material);
@@ -651,6 +673,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE inserirFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _distancia IS NULL OR _capacidadeMunicao IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma de fogo.';
+    END IF;
+    
     CALL inserirArma(_idItem, 'Fogo');
     INSERT INTO Fogo(idItem, sala, inventario, nome, dano, distancia, capacidadeMunicao)
     VALUES (_idItem, _sala, _inventario, _nome, _dano, _distancia, _capacidadeMunicao);
@@ -660,8 +686,8 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarItem(_idItem INT, _tipo VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
-    IF _idItem IS NULL THEN
-        RAISE EXCEPTION 'O ID do item é necessário para atualização.';
+    IF _idItem IS NULL OR _tipo IS NULL THEN
+        RAISE EXCEPTION 'O ID do item e o tipo são necessários para atualização.';
     END IF;
     UPDATE Item SET tipo = _tipo WHERE idItem = _idItem;
 END $$;
@@ -680,6 +706,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma ferramenta.';
+    END IF;
+
     UPDATE Ferramenta SET sala = _sala, inventario = _inventario, durabilidade = _durabilidade WHERE idItem = _idItem;
 END $$;
 
@@ -687,6 +717,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE deletarFerramenta(_idItem INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da ferramenta é necessário para deleção.';
+    END IF;
+
     DELETE FROM Ferramenta WHERE idItem = _idItem;
     CALL deletarItem(_idItem);
 END $$;
@@ -695,6 +729,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar um alimento.';
+    END IF;
+
     UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status WHERE idItem = _idItem;
 END $$;
 
@@ -702,6 +740,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE deletarAlimento(_idItem INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do alimento é necessário para deleção.';
+    END IF;
+
     DELETE FROM Alimento WHERE idItem = _idItem;
     CALL deletarItem(_idItem);
 END $$;
@@ -710,6 +752,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarArma(_idItem INT, _tipo_arma VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _tipo_arma IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma e o tipo da arma são necessários para atualização.';
+    END IF;
+
     UPDATE Arma SET tipo_arma = _tipo_arma WHERE idItem = _idItem;
 END $$;
 
@@ -717,6 +763,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE deletarArma(_idItem INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma é necessário para deleção.';
+    END IF;
+
     DELETE FROM Arma WHERE idItem = _idItem;
     CALL deletarItem(_idItem);
 END $$;
@@ -725,6 +775,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _material IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma arma branca.';
+    END IF;
+
     UPDATE Branca SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, material = _material WHERE idItem = _idItem;
 END $$;
 
@@ -732,6 +786,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE deletarBranca(_idItem INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma branca é necessário para deleção.';
+    END IF;
+
     DELETE FROM Branca WHERE idItem = _idItem;
     CALL deletarArma(_idItem);
 END $$;
@@ -740,6 +798,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE atualizarFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _distancia IS NULL OR _capacidadeMunicao IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma arma de fogo.';
+    END IF;
+
     UPDATE Fogo SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, distancia = _distancia, capacidadeMunicao = _capacidadeMunicao WHERE idItem = _idItem;
 END $$;
 
@@ -747,6 +809,10 @@ END $$;
 CREATE OR REPLACE PROCEDURE deletarFogo(_idItem INT)
 LANGUAGE plpgsql AS $$
 BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma de fogo é necessário para deleção.';
+    END IF;
+    
     DELETE FROM Fogo WHERE idItem = _idItem;
     CALL deletarArma(_idItem);
 END $$;
