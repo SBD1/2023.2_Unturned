@@ -229,29 +229,171 @@ BEGIN
     IF _id IS NULL THEN
         RAISE EXCEPTION 'Preciso do id para criar o personagem';
     END IF;
-    IF (_nome IS NULL OR _stamina IS NULL) AND (_classe IS NULL AND _dano IS NULL) AND (_especie IS NULL) THEN 
+    IF _nome IS NULL AND _stamina IS NULL AND _classe IS NULL AND _dano IS NULL AND _especie IS NULL THEN 
         RAISE EXCEPTION 'Preciso que coloque atributos especificos para eu saber onde guardar as informações';
     END IF;
-    IF ((_classe IS NOT NULL) AND (_especie IS NOT NULL)) THEN
+    IF _classe IS NOT NULL AND _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Posso ser ou animal, ou zumbi, não ambos ao mesmo tempo';
     END IF;
-    IF ((_nome IS NOT NULL) OR (stamina IS NOT NULL)) AND (((_classe IS NOT NULL) AND (_dano IS NOT NULL)) OR (_especie IS NOT NULL)) THEN
+    IF _nome IS NOT NULL AND _stamina IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL AND _especie IS NOT NULL THEN
         RAISE EXCEPTION 'Não posso ser NPC E PC ao mesmo tempo';
     END IF;
-    IF (_nome IS NOT NULL OR _stamina IS NOT NULL) THEN
+    IF _nome IS NOT NULL OR _stamina IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'PC');
         INSERT INTO PC VALUES (_id, _sala, _nome, _vida, _stamina);
-    ELSIF (_classe IS NOT NULL) THEN
+    ELSIF _classe IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
         INSERT INTO NPC VALUES (_id, 'Zumbi');
         INSERT INTO Zumbi VALUES (_id, _vida, _classe, _dano);
-    ELSIF (_especie IS NOT NULL) THEN
+    ELSIF _especie IS NOT NULL THEN
         INSERT INTO PERSONAGEM VALUES (_id, 'NPC');
         INSERT INTO NPC VALUES (_id, 'Animal');
         INSERT INTO Animal VALUES (_id, _vida, _especie);
     END IF;
 END $$;
 
+CREATE OR REPLACE PROCEDURE updateZumbi(_id INT, _vida INT, _classe VARCHAR(255), _dano INT)
+LANGUAGE plpgsql AS $$
+BEGIN  
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para fazer o update do zumbi';
+    END IF;
+    IF _vida IS NULL AND _classe IS NULL AND _dano IS NULL THEN
+        RAISE EXCEPTION 'Preciso de todas os atributos específicos para atualizar o zumbi';
+    END IF;
+    PERFORM * FROM Zumbi WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela Zumbi para fazer o update';
+    END IF;
+    IF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET vida = _vida, classe = _classe, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NOT NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET vida =_vida, classe =_classe WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET vida = _vida, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NULL AND _classe IS NOT NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET classe = _classe, dano = _dano WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _classe IS NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _vida IS  NULL AND _classe IS NOT NULL AND _dano IS NULL THEN
+        UPDATE Zumbi SET classe = _classe WHERE idPersonagem = _id;
+    ELSIF _vida IS  NULL AND _classe IS NULL AND _dano IS NOT NULL THEN
+        UPDATE Zumbi SET dano = _dano WHERE idPersonagem = _id;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE updateAnimal(_id INT, _vida INT, _especie VARCHAR(255))
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para fazer o update do animal';
+    END IF;
+    IF _vida IS NULL AND _especie IS NULL THEN
+        RAISE EXCEPTION 'Preciso dos atributos específicos para fazer o update';
+    END IF;
+    PERFORM * FROM Animal WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela Animal para fazer o update';
+    END IF;
+    IF _vida IS NOT NULL AND _especie IS NOT NULL THEN
+        UPDATE Animal SET vida = _vida, especie = _especie WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL AND _especie IS NULL THEN
+        UPDATE Animal SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _vida IS NULL AND _especie IS NOT NULL THEN
+        UPDATE Animal SET especie = _especie WHERE idPersonagem = _id;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE updatePC(_id INT, _sala INT, _nome VARCHAR(255), _vida INT, _stamina INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id para dar o update no PC';
+    END IF;
+    IF _sala IS NULL AND _nome IS NULL AND _vida IS NULL AND _stamina IS NULL THEN
+        RAISE EXCEPTION 'Preciso de ao menos um atributo específico para fazer o update';
+    END IF;
+    PERFORM * FROM PC WHERE idPersonagem = _id;
+    IF NOT FOUND THEN 
+        RAISE EXCEPTION 'Preciso de um id que exista na tabela PC para fazer o update';
+    END IF;
+    IF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, vida = _vida WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NOT NULL AND _vida IS NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, nome = _nome, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL AND _nome IS NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET sala = _sala, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS  NULL AND _nome IS NOT NULL AND _vida IS NOT NULL AND _stamina IS NOT NULL THEN
+        UPDATE PC SET nome = _nome, vida = _vida, stamina = _stamina WHERE idPersonagem = _id;
+    ELSIF _sala IS NOT NULL THEN
+        UPDATE PC SET sala = _sala WHERE idPersonagem = _id;
+    ELSIF _nome IS NOT NULL THEN
+        UPDATE PC SET nome = _nome WHERE idPersonagem = _id;
+    ELSIF _vida IS NOT NULL THEN
+        UPDATE PC SET vida = _vida WHERE idPersonagem = _id;
+    ELSIF _stamina IS NOT NULL THEN
+        UPDATE PC SET stamina = _stamina WHERE idPersonagem = _id;
+    END IF;
+END $$; 
+
+CREATE OR REPLACE PROCEDURE deletePC(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do PC para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM PC WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM PC WHERE idPersonagem = _id;
+            DELETE FROM Inventario WHERE personagem = _id;
+            DELETE FROM Missao WHERE idPersonagem = _id;
+            DELETE FROM Criador WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse PC pois ele não existe';
+        END IF;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE deleteZumbi(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do Zumbi para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM Zumbi WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM Instancia WHERE NPC = _id;
+            DELETE FROM Zumbi WHERE idPersonagem = _id;
+            DELETE FROM NPC WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse Zumbi pois ele não existe';
+        END IF;
+    END IF;
+END $$;
+
+CREATE OR REPLACE PROCEDURE deleteAnimal(_id INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _id IS NULL THEN
+        RAISE EXCEPTION 'Preciso do id do Animal para deletá-lo';
+    END IF;
+    IF _id IS NOT NULL THEN
+        PERFORM * FROM Animal WHERE idPersonagem = _id;
+        IF FOUND THEN
+            DELETE FROM Animal WHERE idPersonagem = _id;
+            DELETE FROM NPC WHERE idPersonagem = _id;
+            DELETE FROM Personagem WHERE idPersonagem = _id;
+        ELSIF NOT FOUND THEN
+            RAISE EXCEPTION 'Você não pode remover esse Animal pois ele não existe';
+        END IF;
+    END IF;
+END $$;
 
 CREATE OR REPLACE FUNCTION verifica_npcs() RETURNS TRIGGER AS $verifica_npcs$
 
@@ -275,7 +417,7 @@ CREATE OR REPLACE FUNCTION verifica_pcs() RETURNS TRIGGER AS $verifica_pcs$
 
 BEGIN
 
-	PERFORM * FROM PC WHERE NPC.idPersonagem = New.idPersonagem;
+	PERFORM * FROM NPC WHERE NPC.idPersonagem = New.idPersonagem;
 	IF FOUND THEN
 		RAISE EXCEPTION 'ERRO: Já existe um NPC com esse ID';
 	END IF;
@@ -372,27 +514,27 @@ BEFORE INSERT OR UPDATE ON Alimento
 FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
 
 
-CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
+-- CREATE OR REPLACE FUNCTION verifica_alimentos() RETURNS TRIGGER AS $verifica_alimentos$
 
-BEGIN
+-- BEGIN
 
-	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
-	IF FOUND THEN
-		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
-	END IF;
+-- 	PERFORM * FROM Ferramenta WHERE Ferramenta.idItem = New.idItem;
+-- 	IF FOUND THEN
+-- 		RAISE EXCEPTION 'ERRO: Já existe uma Ferramenta com esse ID';
+-- 	END IF;
 
-    PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
-	IF FOUND THEN
-		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
-	END IF;
+--     PERFORM * FROM Arma WHERE Arma.idItem = New.idItem;
+-- 	IF FOUND THEN
+-- 		RAISE EXCEPTION 'ERRO: Já existe uma Arma com esse ID';
+-- 	END IF;
 
-	RETURN NEW;
-END;
-$verifica_alimentos$ LANGUAGE plpgsql;
+-- 	RETURN NEW;
+-- END;
+-- $verifica_alimentos$ LANGUAGE plpgsql;
 
-CREATE TRIGGER alimentos
-BEFORE INSERT OR UPDATE ON Alimento
-FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
+-- CREATE TRIGGER alimentos
+-- BEFORE INSERT OR UPDATE ON Alimento
+-- FOR EACH ROW EXECUTE PROCEDURE verifica_alimentos();
 
 
 CREATE OR REPLACE FUNCTION verifica_armas() RETURNS TRIGGER AS $verifica_armas$
@@ -440,7 +582,7 @@ CREATE OR REPLACE FUNCTION verifica_brancas() RETURNS TRIGGER AS $verifica_branc
 
 BEGIN
 
-	PERFORM * FROM Fogo WHERE Fogos.idItem = New.idItem;
+	PERFORM * FROM Fogo WHERE Fogo.idItem = New.idItem;
 	IF FOUND THEN
 		RAISE EXCEPTION 'ERRO: Já existe uma arma de Fogo com esse ID';
 	END IF;
@@ -453,3 +595,224 @@ CREATE TRIGGER brancas
 BEFORE INSERT OR UPDATE ON Branca
 FOR EACH ROW EXECUTE PROCEDURE verifica_brancas();
 
+-------------------------------------------------------------------------------------------------------------
+
+-- Procedimento para inserir um novo 'Item'
+CREATE OR REPLACE PROCEDURE inserirItem(_idItem INT, _tipo VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do item é necessário para a criação.';
+    END IF;
+    IF _tipo IS NULL THEN
+        RAISE EXCEPTION 'O tipo do item é necessário para a criação.';
+    END IF;
+
+    -- Verifica se o tipo do item é um dos três tipos permitidos
+    IF _tipo NOT IN ('Ferramenta', 'Alimento', 'Arma') THEN
+        RAISE EXCEPTION 'O tipo do item deve ser Ferramenta, Alimento ou Arma.';
+    END IF;
+
+    INSERT INTO Item(idItem, tipo)
+    VALUES (_idItem, _tipo);
+END $$;
+
+-- Procedimento para inserir uma nova 'Ferramenta'
+CREATE OR REPLACE PROCEDURE inserirFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma ferramenta.';
+    END IF;
+
+    CALL inserirItem(_idItem, 'Ferramenta');
+    INSERT INTO Ferramenta(idItem, sala, inventario, durabilidade)
+    VALUES (_idItem, _sala, _inventario, _durabilidade);
+END $$;
+
+-- Procedimento para inserir um novo 'Alimento'
+CREATE OR REPLACE PROCEDURE inserirAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir um alimento.';
+    END IF;
+
+    CALL inserirItem(_idItem, 'Alimento');
+    INSERT INTO Alimento(idItem, sala, inventario, status)
+    VALUES (_idItem, _sala, _inventario, _status);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma'
+CREATE OR REPLACE PROCEDURE inserirArma(_idItem INT, _tipo_arma VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _tipo_arma IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma.';
+    END IF;
+
+    CALL inserirItem(_idItem, 'Arma');
+    INSERT INTO Arma(idItem, tipo_arma)
+    VALUES (_idItem, _tipo_arma);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma Branca'
+CREATE OR REPLACE PROCEDURE inserirBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _material IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma branca.';
+    END IF;
+
+    CALL inserirArma(_idItem, 'Branca');
+    INSERT INTO Branca(idItem, sala, inventario, nome, dano, material)
+    VALUES (_idItem, _sala, _inventario, _nome, _dano, _material);
+END $$;
+
+-- Procedimento para inserir uma nova 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE inserirFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _distancia IS NULL OR _capacidadeMunicao IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para inserir uma arma de fogo.';
+    END IF;
+    
+    CALL inserirArma(_idItem, 'Fogo');
+    INSERT INTO Fogo(idItem, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+    VALUES (_idItem, _sala, _inventario, _nome, _dano, _distancia, _capacidadeMunicao);
+END $$;
+
+-- Procedimento para atualizar um 'Item'
+CREATE OR REPLACE PROCEDURE atualizarItem(_idItem INT, _tipo VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _tipo IS NULL THEN
+        RAISE EXCEPTION 'O ID do item e o tipo são necessários para atualização.';
+    END IF;
+    UPDATE Item SET tipo = _tipo WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar um 'Item'
+CREATE OR REPLACE PROCEDURE deletarItem(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do item é necessário para deleção.';
+    END IF;
+    DELETE FROM Item WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para atualizar uma 'Ferramenta'
+CREATE OR REPLACE PROCEDURE atualizarFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma ferramenta.';
+    END IF;
+
+    UPDATE Ferramenta SET sala = _sala, inventario = _inventario, durabilidade = _durabilidade WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Ferramenta'
+CREATE OR REPLACE PROCEDURE deletarFerramenta(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da ferramenta é necessário para deleção.';
+    END IF;
+
+    DELETE FROM Ferramenta WHERE idItem = _idItem;
+    CALL deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar um 'Alimento'
+CREATE OR REPLACE PROCEDURE atualizarAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar um alimento.';
+    END IF;
+
+    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar um 'Alimento'
+CREATE OR REPLACE PROCEDURE deletarAlimento(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID do alimento é necessário para deleção.';
+    END IF;
+
+    DELETE FROM Alimento WHERE idItem = _idItem;
+    CALL deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma'
+CREATE OR REPLACE PROCEDURE atualizarArma(_idItem INT, _tipo_arma VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _tipo_arma IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma e o tipo da arma são necessários para atualização.';
+    END IF;
+
+    UPDATE Arma SET tipo_arma = _tipo_arma WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma'
+CREATE OR REPLACE PROCEDURE deletarArma(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma é necessário para deleção.';
+    END IF;
+
+    DELETE FROM Arma WHERE idItem = _idItem;
+    CALL deletarItem(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma Branca'
+CREATE OR REPLACE PROCEDURE atualizarBranca(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _material VARCHAR)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _material IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma arma branca.';
+    END IF;
+
+    UPDATE Branca SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, material = _material WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma Branca'
+CREATE OR REPLACE PROCEDURE deletarBranca(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma branca é necessário para deleção.';
+    END IF;
+
+    DELETE FROM Branca WHERE idItem = _idItem;
+    CALL deletarArma(_idItem);
+END $$;
+
+-- Procedimento para atualizar uma 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE atualizarFogo(_idItem INT, _sala INT, _inventario INT, _nome VARCHAR, _dano INT, _distancia INT, _capacidadeMunicao INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _nome IS NULL OR _dano IS NULL OR _distancia IS NULL OR _capacidadeMunicao IS NULL THEN
+        RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma arma de fogo.';
+    END IF;
+
+    UPDATE Fogo SET sala = _sala, inventario = _inventario, nome = _nome, dano = _dano, distancia = _distancia, capacidadeMunicao = _capacidadeMunicao WHERE idItem = _idItem;
+END $$;
+
+-- Procedimento para deletar uma 'Arma de Fogo'
+CREATE OR REPLACE PROCEDURE deletarFogo(_idItem INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF _idItem IS NULL THEN
+        RAISE EXCEPTION 'O ID da arma de fogo é necessário para deleção.';
+    END IF;
+    
+    DELETE FROM Fogo WHERE idItem = _idItem;
+    CALL deletarArma(_idItem);
+END $$;

@@ -126,6 +126,44 @@ CREATE TABLE Instancia (
     CONSTRAINT fk_instancia_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
 );
 
+-- Tabela de missão
+CREATE TABLE Missao(
+    idMissao INT PRIMARY KEY,
+    idPersonagem INT NOT NULL,
+    Descricao VARCHAR(255),
+    Recompensa VARCHAR(255),
+    Estado VARCHAR(255),
+    CONSTRAINT check_estado_missao CHECK (Estado IN ('Doing', 'Done')),
+    CONSTRAINT fk_personagem_missao FOREIGN KEY (idPersonagem) REFERENCES PC(idPersonagem) -- Pode ser Personagem em vez de PC
+);
+
+-- Tabela do criador
+CREATE TABLE Criador(
+    idCriador INT PRIMARY KEY,
+    idPersonagem INT NOT NULL,
+    nome VARCHAR(255),
+    CONSTRAINT fk_personagem_missao FOREIGN KEY (idPersonagem) REFERENCES PC(idPersonagem) -- Pode ser Personagem em vez de PC
+);
+
+-- Tabela do Item
+CREATE TABLE Item (
+    idItem INT PRIMARY KEY,
+    tipo VARCHAR(255) DEFAULT 'Alimento',
+    CONSTRAINT item_tipo_check CHECK (tipo IN ('Ferramenta', 'Alimento', 'Arma'))
+);
+
+-- Tabela da receita
+CREATE TABLE Receita(
+    idReceita INT PRIMARY KEY,
+    idCriador INT NOT NULL,
+    idItem INT NOT NULL,
+    Resultado VARCHAR(255),
+    Requisitos VARCHAR(255),
+    TempoCriacao INT NOT NULL,
+    CONSTRAINT fk_criador_receita FOREIGN KEY (idCriador) REFERENCES Criador(idCriador),
+    CONSTRAINT fk_item_receita FOREIGN KEY (idItem) REFERENCES Item(idItem)
+);
+
 -- Tabela do Inventário
 CREATE TABLE Inventario (
     personagem INT PRIMARY KEY,
@@ -133,17 +171,6 @@ CREATE TABLE Inventario (
     maxItens INT DEFAULT 20,
     CONSTRAINT fk_inventario_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
     CONSTRAINT inventario_quantidadeItem_check CHECK (quantidadeItens < maxItens)
-);
-
--- Tabela do Item
-CREATE TABLE Item (
-    idItem INT PRIMARY KEY,
-    sala INT,
-    inventario INT,
-    tipo VARCHAR(255) DEFAULT 'Alimento',
-    CONSTRAINT fk_item_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
-    CONSTRAINT fk_item_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
-    CONSTRAINT item_tipo_check CHECK (tipo IN ('Ferramenta', 'Alimento', 'Arma'))
 );
 
 -- Tabela das Ferramentas
