@@ -11,9 +11,11 @@
 &emsp;&emsp; Relacionamentos são as associações entre entidades. Por exemplo, um livro pode ter um relacionamento com um autor, indicando que um autor pode ter escrito vários livros.
 
 &emsp;&emsp; O DER é desenhado usando símbolos específicos. Uma caixa retangular representa uma entidade, com os atributos listados dentro dela. Os relacionamentos são representados por linhas que conectam as entidades, com uma indicação da cardinalidade do relacionamento, ou seja, quantos objetos de uma entidade estão associados a quantos objetos de outra entidade.
-
+## Versão 1 desatualizada
 ![](../assets/der.png)
 
+## Versão 2 atualizada 
+![](../assets/DER_V2.png)
 
 <figcaption align='center'>
     <b>Figura 1: Diagrama Entidade Relacionamento</b>
