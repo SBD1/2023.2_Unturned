@@ -38,6 +38,6 @@
   - [DQL](src/DQL.sql) 
 
 - Módulo 3
-  - [Triggers e procedures](src/Trigger_Storage_Procedure.sql)
+  - [Triggers e procedures](src/database/Trigger_Storage_Procedure.sql)
   - [Jogo parcial](src/adventures/russia.py)
  
