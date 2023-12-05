@@ -4,10 +4,18 @@
 
 &emsp;&emsp; Agora, a seguir, apresentaremos um Modelo de Relacionamento (MR) específico relacionado ao jogo Unturned, que ilustrará como as diferentes partes do jogo estão interconectadas e como os dados são organizados no contexto que iremos desenvolver desse jogo.
 
+## Versão 1 desatualizada
 ![](../assets/MRv1.png)
+<figcaption align='center'>
+    <b>Figura 2: Modelo Relacional Versão 1 </b>
+    <br><small>Fonte: Elaboração Própria</small>
+</figcaption> </center>
+
+## Versão 2 atualizada
+![](../assets/MR_V2.png)
 
 <figcaption align='center'>
-    <b>Figura 1: Modelo Relacional </b>
+    <b>Figura 2: Modelo Relacional Versão 2 </b>
     <br><small>Fonte: Elaboração Própria</small>
 </figcaption> </center>
 
