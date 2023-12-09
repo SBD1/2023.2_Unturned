@@ -1,21 +1,27 @@
-version: "3.8"
+version: '3'
+
 services:
-  db:
-    container_name: postgres_container
-    image: postgres
+  postgres:
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: test_db
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: unturned
+      POSTGRES_USER: postgres
+    networks:
+      - mynetwork
+
   pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - mynetwork
     ports:
       - "5050:80"
+
+networks:
+  mynetwork:
+    driver: bridge
