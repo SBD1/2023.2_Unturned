@@ -1,10 +1,10 @@
 -- Inserir dados na tabela Mapa
-INSERT INTO Mapa (idMapa, dimensao, nomeMapa)
-VALUES (1, 1, 'Washington'),
-       (2, 2, 'PEI'),
-       (3, 3, 'Yukon'),
-       (4, 4, 'Russia'),
-       (5, 5, 'EUA');
+INSERT INTO Mapa (idMapa, dimensao, nomeMapa, descricao)
+VALUES (1, 1, 'Washington', 'Esta nos EUA'),
+       (2, 2, 'PEI', 'Esta na India'),
+       (3, 3, 'Yukon', 'Esta na China'),
+       (4, 4, 'Russia', 'Esta na Russia'),
+       (5, 5, 'EUA', 'Esta nos EUA');
 
 
 -- Inserir dados na tabela Cidade
@@ -16,13 +16,13 @@ VALUES ('Seattle', 1, 0),
        ('Chicago', 5, 0);
 
 -- Inserir dados na tabela Sala
-INSERT INTO Sala (idSala, cidade, radioatividade)
-VALUES (1, 'Formosa', 30),
-       (2, 'Formosa', 30),
-       (3, 'Whitehorse', 50),
-       (4, 'Chicago', 10),
-       (5, 'Seattle', 90),
-       (6, 'Charlottetown', 0)
+INSERT INTO Sala (idSala, cidade, radioatividade, descricao)
+VALUES (1, 'Formosa', 30, 'Pouco radioativa'),
+       (2, 'Formosa', 30, 'Pouco radioativa'),
+       (3, 'Whitehorse', 50,'Radiação mediana'),
+       (4, 'Chicago', 10, 'Pouco radioativa'),
+       (5, 'Seattle', 90, 'Muito radioativa'),
+       (6, 'Charlottetown', 0, 'Nada radioativa')
  
 -- Para inserir veiculo terrestre
 CALL insere_veiculo(1, 1, 'Ferrari', 100, 100, 4::smallint, NULL::int, NULL::int);

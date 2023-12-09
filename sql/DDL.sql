@@ -2,7 +2,8 @@
 CREATE TABLE Mapa (
     idMapa INT PRIMARY KEY,
     dimensao INT NOT NULL,
-    nomeMapa VARCHAR(255) NOT NULL
+    nomeMapa VARCHAR(255) NOT NULL,
+    descricao VARCHAR(1000) NOT NULL
 );
 
 -- Tabela Cidade
@@ -18,6 +19,7 @@ CREATE TABLE Sala  (
     idSala INT PRIMARY KEY,
     cidade VARCHAR(255),
     radioatividade INT NOT NULL,
+    descricao VARCHAR(1000) NOT NULL,
     CONSTRAINT fk_sala_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome)
 );
 

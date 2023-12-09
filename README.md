@@ -8,7 +8,7 @@
 
 # Sobre
 
-&emsp;&emsp; Esse repositório é dedicado a realização dos trabalhos da matéria Sistemas de Banco de Dados 1. O jogo base escolhido para a realização dos trabalhos é o Unturned, que desrespeito a um jogo de mundo aberto de sobrevivência com a temática de apocalipse zumbi. 
+&emsp;&emsp; Esse repositório é dedicado a realização dos trabalhos da matéria Sistemas de Banco de Dados 1. O jogo base escolhido para a realização dos trabalhos é o Unturned, que desrespeito a um jogo de mundo aberto de sobrevivência com a temática de apocalipse zumbi.
 
 ## Integrantes do grupo
 
@@ -28,16 +28,17 @@
 ## Entregas
 
 - Módulo 1
+
   - [DER](docs/DER.md)
   - [MR](docs/MR.md)
   - [Dicionário de Dados](docs/DicionarioDeDados.md)
 
 - Módulo 2
-  - [DDL](src/DDL.sql)
-  - [DML](src/DML.sql)
-  - [DQL](src/DQL.sql) 
+
+  - [DDL](sql/DDL.sql)
+  - [DML](sql/DML.sql)
+  - [DQL](sql/DQL.sql)
 
 - Módulo 3
-  - [Triggers e procedures](src/database/Trigger_Storage_Procedure.sql)
+  - [Triggers e procedures](sql/Trigger_Storage_Procedure.sql)
   - [Jogo parcial](src/adventures/russia.py)
- 
