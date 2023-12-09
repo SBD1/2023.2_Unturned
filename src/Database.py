@@ -112,3 +112,80 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+
+    def insert_veiculo_terrestre(connection,id, sala, nome, vida, combustivel, numRodas):
+        cursor = connection.cursor()
+
+        querry = "CALL insere_veiculo(id, sala, nome, vida, combustivel, numRodas::smallint, NULL::int, NULL::int)" % (
+            id, sala, nome, vida, combustivel, numRodas)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def insert_veiculo_aquatico(connection,id, sala, nome, vida, combustivel, propulsao):
+        cursor = connection.cursor()
+
+        querry = "CALL insere_veiculo(id, sala, nome, vida, combustivel, NULL::smallint, propulsao, NULL::int)" % (
+            id, sala, nome, vida, combustivel, propulsao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def insert_veiculo_aereo(connection,id, sala, nome, vida, combustivel, maxAltitude):
+        cursor = connection.cursor()
+
+        querry = "CALL insere_veiculo(id, sala, nome, vida, combustivel, NULL::smallint, NULL::int, maxAltitude);" % (
+            id, sala, nome, vida, combustivel, maxAltitude)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_veiculo_terrestre(connection,id, sala, nome, vida, combustivel, numRodas):
+        cursor = connection.cursor()
+
+        querry = "CALL update_veiculo(id, sala, nome, vida, combustivel, numRodas::smallint, NULL::int, NULL::int)" % (
+            id, sala, nome, vida, combustivel, numRodas)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_veiculo_aquatico(connection,id, sala, nome, vida, combustivel, propulsao):
+        cursor = connection.cursor()
+
+        querry = "CALL update_veiculo(id, sala, nome, vida, combustivel, NULL::smallint, propulsao::int, NULL::int)" % (
+            id, sala, nome, vida, combustivel, propulsao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def update_veiculo_aereo(connection,id, sala, nome, vida, combustivel, maxAltitude):
+        cursor = connection.cursor()
+
+        querry = "CALL update_veiculo(id, sala, nome, vida, combustivel, NULL::smallint, NULL::int, maxAltitude::int)" % (
+            id, sala, nome, vida, combustivel, maxAltitude)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def remover_veiculo(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL removerVeiculo(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
