@@ -212,44 +212,44 @@ class DataBase():
         connection.commit()
         cursor.close()
     
-    def inserir_alimento(connection,id, sala, inventario, status):
+    def inserir_alimento(connection,id, sala, inventario, status, nome):
         cursor = connection.cursor()
 
-        querry = "CALL inserirBranca(id, sala, inventario, status)" % (
-            connection,id, sala, inventario, status)
+        querry = "CALL inserirBranca(id, sala, inventario, status, nome)" % (
+            connection,id, sala, inventario, status, nome)
 
         cursor.execute(querry)
 
         connection.commit()
         cursor.close()
 
-    def inserir_ferramenta(connection,id, sala, inventario, durabilidade):
+    def inserir_ferramenta(connection,id, sala, inventario, durabilidade, nome):
         cursor = connection.cursor()
 
-        querry = "CALL inserirFerramenta(id, sala, inventario, durabilidade)" % (
-            connection,id, sala, inventario, durabilidade)
+        querry = "CALL inserirFerramenta(id, sala, inventario, durabilidade, nome)" % (
+            connection,id, sala, inventario, durabilidade, nome)
 
         cursor.execute(querry)
 
         connection.commit()
         cursor.close()
 
-    def update_ferramenta(connection,id, sala, inventario, durabilidade):
+    def update_ferramenta(connection,id, sala, inventario, durabilidade, nome):
         cursor = connection.cursor()
 
-        querry = "CALL atualizarFerramenta(id, sala, inventario, durabilidade)" % (
-            connection,id, sala, inventario, durabilidade)
+        querry = "CALL atualizarFerramenta(id, sala, inventario, durabilidade, nome)" % (
+            connection,id, sala, inventario, durabilidade, nome)
 
         cursor.execute(querry)
 
         connection.commit()
         cursor.close()
 
-    def update_alimento(connection,id, sala, inventario, status):
+    def update_alimento(connection,id, sala, inventario, status, nome):
         cursor = connection.cursor()
 
-        querry = "CALL atualizarAlimento(id, sala, inventario, status)" % (
-            connection,id, sala, inventario, status)
+        querry = "CALL atualizarAlimento(id, sala, inventario, status, nome)" % (
+            connection,id, sala, inventario, status, nome)
 
         cursor.execute(querry)
 

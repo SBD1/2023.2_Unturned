@@ -618,7 +618,7 @@ BEGIN
 END $$;
 
 -- Procedimento para inserir uma nova 'Ferramenta'
-CREATE OR REPLACE PROCEDURE inserirFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+CREATE OR REPLACE PROCEDURE inserirFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT, _nome VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
     IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
@@ -626,12 +626,12 @@ BEGIN
     END IF;
 
     CALL inserirItem(_idItem, 'Ferramenta');
-    INSERT INTO Ferramenta(idItem, sala, inventario, durabilidade)
-    VALUES (_idItem, _sala, _inventario, _durabilidade);
+    INSERT INTO Ferramenta(idItem, sala, inventario, durabilidade, nome)
+    VALUES (_idItem, _sala, _inventario, _durabilidade, _nome);
 END $$;
 
 -- Procedimento para inserir um novo 'Alimento'
-CREATE OR REPLACE PROCEDURE inserirAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+CREATE OR REPLACE PROCEDURE inserirAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR, _nome VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
     IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
@@ -639,8 +639,8 @@ BEGIN
     END IF;
 
     CALL inserirItem(_idItem, 'Alimento');
-    INSERT INTO Alimento(idItem, sala, inventario, status)
-    VALUES (_idItem, _sala, _inventario, _status);
+    INSERT INTO Alimento(idItem, sala, inventario, status, nome)
+    VALUES (_idItem, _sala, _inventario, _status, _nome);
 END $$;
 
 -- Procedimento para inserir uma nova 'Arma'
@@ -703,14 +703,14 @@ BEGIN
 END $$;
 
 -- Procedimento para atualizar uma 'Ferramenta'
-CREATE OR REPLACE PROCEDURE atualizarFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT)
+CREATE OR REPLACE PROCEDURE atualizarFerramenta(_idItem INT, _sala INT, _inventario INT, _durabilidade INT, _nome VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
     IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _durabilidade IS NULL THEN
         RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar uma ferramenta.';
     END IF;
 
-    UPDATE Ferramenta SET sala = _sala, inventario = _inventario, durabilidade = _durabilidade WHERE idItem = _idItem;
+    UPDATE Ferramenta SET sala = _sala, inventario = _inventario, durabilidade = _durabilidade, nome = _nome WHERE idItem = _idItem;
 END $$;
 
 -- Procedimento para deletar uma 'Ferramenta'
@@ -726,14 +726,14 @@ BEGIN
 END $$;
 
 -- Procedimento para atualizar um 'Alimento'
-CREATE OR REPLACE PROCEDURE atualizarAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR)
+CREATE OR REPLACE PROCEDURE atualizarAlimento(_idItem INT, _sala INT, _inventario INT, _status VARCHAR, _nome VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
-    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL THEN
+    IF _idItem IS NULL OR _sala IS NULL OR _inventario IS NULL OR _status IS NULL OR _NOME IS NULL THEN
         RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar um alimento.';
     END IF;
 
-    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status WHERE idItem = _idItem;
+    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status, nome = _nome WHERE idItem = _idItem
 END $$;
 
 -- Procedimento para deletar um 'Alimento'
