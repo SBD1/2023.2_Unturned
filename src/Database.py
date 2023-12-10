@@ -189,3 +189,49 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+    
+    def inserir_arma_branca(connection,id, sala, inventario, nome, dano, material):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirBranca(id, sala, inventario, nome, dano, material)" % (
+            id, sala, inventario, nome, dano, material)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def inserir_arma_fogo(connection,id, sala, inventario, nome, dano, distancia, capacidadeMunicao):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirBranca(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
+            id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def inserir_alimento(connection,id, sala, inventario, status):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirBranca(connection,id, sala, inventario, status)" % (
+            connection,id, sala, inventario, status)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def inserir_ferramenta(connection,id, sala, inventario, durabilidade):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirFerramenta(connection,id, sala, inventario, durabilidade)" % (
+            connection,id, sala, inventario, durabilidade)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    
