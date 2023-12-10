@@ -16,13 +16,13 @@ VALUES ('Seattle', 1, 0),
        ('Chicago', 5, 0);
 
 -- Inserir dados na tabela Sala
-INSERT INTO Sala (idSala, cidade, radioatividade, descricao)
-VALUES (1, 'Formosa', 30, 'Pouco radioativa'),
-       (2, 'Formosa', 30, 'Pouco radioativa'),
-       (3, 'Whitehorse', 50,'Radiação mediana'),
-       (4, 'Chicago', 10, 'Pouco radioativa'),
-       (5, 'Seattle', 90, 'Muito radioativa'),
-       (6, 'Charlottetown', 0, 'Nada radioativa')
+INSERT INTO Sala (idSala, nome, cidade, descricao) VALUES
+(1, 'Sala de Reuniões A', 'São Paulo', 'Uma sala de reuniões equipada com tecnologia de ponta para apresentações e videoconferências'),
+(2, 'Auditório B', 'Rio de Janeiro', 'Um amplo auditório com capacidade para 100 pessoas, ideal para palestras e eventos'),
+(3, 'Sala de Treinamento C', 'Belo Horizonte', 'Espaço dedicado para treinamentos corporativos, com mesas configuráveis e recursos audiovisuais'),
+(4, 'Sala de Estudo D', 'São Paulo', 'Ambiente tranquilo e silencioso, projetado para estudos individuais e em grupo'),
+(5, 'Sala de Conferências E', 'Brasília', 'Sala versátil com configuração modular, adequada para conferências, workshops e seminários');
+
  
 -- Para inserir veiculo terrestre
 CALL insere_veiculo(1, 1, 'Ferrari', 100, 100, 4::smallint, NULL::int, NULL::int);

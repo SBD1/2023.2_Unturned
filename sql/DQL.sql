@@ -3,10 +3,6 @@ SELECT cidade.nome AS "Nome da Cidade", mapa.nomeMapa AS "Nome do Mapa"
 FROM cidade
     JOIN mapa ON cidade.mapa = mapa.idMapa;
 
-SELECT nome, radioatividade
-FROM Cidade
-ORDER BY radioatividade DESC;
-
 -- Personagem
 SELECT genetica, COUNT(*) AS quantidade_de_npc
 FROM NPC
@@ -38,7 +34,7 @@ GROUP BY tipo;
 
 SELECT classe, COUNT(*) AS quantidade_de_armas
 FROM (
-                    SELECT 'Fogo' AS classe
+                            SELECT 'Fogo' AS classe
         FROM Fogo
     UNION ALL
         SELECT 'Branca' AS classe
@@ -74,22 +70,41 @@ FROM Veiculo
 GROUP BY tipo;
 
 -- Listar Tudo
-SELECT * FROM mapa;
-SELECT * FROM cidade;
-SELECT * FROM veiculo;
-SELECT * FROM terrestre;
-SELECT * FROM aereo;
-SELECT * FROM aquatico;
-SELECT * FROM personagem;
-SELECT * FROM pc;
-SELECT * FROM npc;
-SELECT * FROM instancia;
-SELECT * FROM zumbi;
-SELECT * FROM animal;
-SELECT * FROM inventario;
-SELECT * FROM item;
-SELECT * FROM arma;
-SELECT * FROM ferramenta;
-SELECT * FROM alimento;
-SELECT * FROM fogo;
-SELECT * FROM branca;
+SELECT *
+FROM mapa;
+SELECT *
+FROM cidade;
+SELECT *
+FROM veiculo;
+SELECT *
+FROM terrestre;
+SELECT *
+FROM aereo;
+SELECT *
+FROM aquatico;
+SELECT *
+FROM personagem;
+SELECT *
+FROM pc;
+SELECT *
+FROM npc;
+SELECT *
+FROM instancia;
+SELECT *
+FROM zumbi;
+SELECT *
+FROM animal;
+SELECT *
+FROM inventario;
+SELECT *
+FROM item;
+SELECT *
+FROM arma;
+SELECT *
+FROM ferramenta;
+SELECT *
+FROM alimento;
+SELECT *
+FROM fogo;
+SELECT *
+FROM branca;
