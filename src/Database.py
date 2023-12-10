@@ -333,3 +333,15 @@ class DataBase():
             print(f"Descrição para idMapa 1: {row[0]}")
         else:
             print("Não há descrição para idMapa 1.")    
+
+    def select_sala_descricao(conn, cursor, nome):
+        cursor.execute(f"SELECT descricao FROM Sala WHERE nome = {nome};")
+
+        # Recuperar o resultado da consulta
+        row = cursor.fetchone()
+
+        # Imprimir a descrição se houver um resultado
+        if row:
+            print(f"Descrição para idMapa 1: {row[0]}")
+        else:
+            print("Não há descrição para idMapa 1.")   
