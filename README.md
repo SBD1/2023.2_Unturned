@@ -1,44 +1,43 @@
 # 2023.2_Unturned
 
-<center>
+<p align="center">
+  <img src="assets/unturned.jpg" alt="Unturned">
+</p>
 
-![Unturned](assets/unturned.jpg)
+## Sobre o Projeto
 
- </center>
+Este repositório é dedicado ao desenvolvimento de trabalhos para a disciplina de Sistemas de Banco de Dados 1. O jogo base escolhido para aplicação dos conceitos é o _Unturned_, um jogo de sobrevivência em mundo aberto com temática de apocalipse zumbi. O objetivo é explorar como os sistemas de banco de dados podem ser integrados e utilizados em um ambiente de jogo.
 
-# Sobre
+## Integrantes do Grupo
 
-&emsp;&emsp; Esse repositório é dedicado a realização dos trabalhos da matéria Sistemas de Banco de Dados 1. O jogo base escolhido para a realização dos trabalhos é o Unturned, que desrespeito a um jogo de mundo aberto de sobrevivência com a temática de apocalipse zumbi.
-
-## Integrantes do grupo
-
-|                                                  **Foto**                                                   | **Matrícula** |            **Nome**             |
-| :---------------------------------------------------------------------------------------------------------: | :-----------: | :-----------------------------: |
-|     <img src="https://avatars.githubusercontent.com/DelzironBraz" width="100px;" alt="Foto Delziron"/>      |   200057421   |      Delziron Braz de Lima      |
-|       <img src="https://avatars.githubusercontent.com/EuricoAbreu" width="100px;" alt="Foto Eurico">        |   200017519   |  Eurico Menezes de Abreu Neto   |
-|  <img src="https://avatars.githubusercontent.com/u/71076129?v=4" width="100px;" alt="Foto João Henrique"/>  |   200067923   | João Henrique Marques Calzavara |
-| <img src="https://avatars.githubusercontent.com/u/87666623?v=4" width="100px;" alt="Foto Marcos Vinicius"/> |   200062379   |     Marcos Vinícius de Deus     |
+| **Matrícula** | **Nome**                        | **Foto**                                                                      |
+| ------------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| 200057421     | Delziron Braz de Lima           | ![Foto Delziron](https://avatars.githubusercontent.com/DelzironBraz)          |
+| 200017519     | Eurico Menezes de Abreu Neto    | ![Foto Eurico](https://avatars.githubusercontent.com/EuricoAbreu)             |
+| 200067923     | João Henrique Marques Calzavara | ![Foto João Henrique](https://avatars.githubusercontent.com/u/71076129?v=4)   |
+| 200062379     | Marcos Vinícius de Deus         | ![Foto Marcos Vinicius](https://avatars.githubusercontent.com/u/87666623?v=4) |
 
 ## Apresentações
 
-[Apresentação do Módulo 1](https://unbbr.sharepoint.com/:v:/s/Bancos1/EYwxobRqXIZKoffKm-LGR9QBVNREMPZuQ3zBR8UXwwaQcg?e=eVV8i8&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZyIsInJlZmVycmFsQXBwUGxhdGZvcm0iOiJXZWIiLCJyZWZlcnJhbE1vZGUiOiJ2aWV3In19) ou [Vídeo apresentação 1](docs/apresentacoes) <br>
-[Apresentação do Módulo 2](https://youtu.be/djW7gptqLoQ) <br>
-[Apresentação do Módulo 3](https://youtu.be/L42dy9sB3yw)
+- [**Módulo 1:** Apresentação no SharePoint](https://unbbr.sharepoint.com/:v:/s/Bancos1/EYwxobRqXIZKoffKm-LGR9QBVNREMPZuQ3zBR8UXwwaQcg?e=eVV8i8&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZyIsInJlZmVycmFsQXBwUGxhdGZvcm0iOiJXZWIiLCJyZWZlcnJhbE1vZGUiOiJ2aWV3In19) ou [Vídeo no Diretório](docs/apresentacoes)
+- [**Módulo 2:** Vídeo no YouTube](https://youtu.be/djW7gptqLoQ)
+- [**Módulo 3:** Vídeo no YouTube](https://youtu.be/L42dy9sB3yw)
 
-## Entregas
+## Entregas por Módulo
 
-- Módulo 1
+### Módulo 1
 
-  - [DER](docs/DER.md)
-  - [MR](docs/MR.md)
-  - [Dicionário de Dados](docs/DicionarioDeDados.md)
+- [Diagrama Entidade-Relacionamento (DER)](docs/DER.md)
+- [Modelo Relacional (MR)](docs/MR.md)
+- [Dicionário de Dados](docs/DicionarioDeDados.md)
 
-- Módulo 2
+### Módulo 2
 
-  - [DDL](sql/DDL.sql)
-  - [DML](sql/DML.sql)
-  - [DQL](sql/DQL.sql)
+- [Linguagem de Definição de Dados (DDL)](sql/DDL.sql)
+- [Linguagem de Manipulação de Dados (DML)](sql/DML.sql)
+- [Linguagem de Consulta de Dados (DQL)](sql/DQL.sql)
 
-- Módulo 3
-  - [Triggers e procedures](sql/Trigger_Storage_Procedure.sql)
-  - [Jogo parcial](src/adventures/russia.py)
+### Módulo 3
+
+- [Triggers e Procedures](sql/Trigger_Storage_Procedure.sql)
+- [Implementação Parcial do Jogo](src/adventures/russia.py)
