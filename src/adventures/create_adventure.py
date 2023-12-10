@@ -121,7 +121,7 @@ inserir_sala(conn, cursor, nome_cidade="Moscow", nome_sala="cidade_arruinada", d
 
 # Casa Abandonada
 descricao_sala= """
-    Dentro da casa, você percebe que não está sozinho. Outro zumbi está no local.
+    Você entra na casa abandonada.
 """
 
 inserir_sala(conn, cursor, nome_cidade="Moscow", nome_sala="casa_abandonada", descricao_sala=descricao_sala)
@@ -140,7 +140,7 @@ descricao_sala= """
     Apenas um zumbi continua seguindo você para dentro da igreja.
 """
 
-inserir_sala(conn, cursor, nome_cidade="Moscow", nome_sala="celeiro", descricao_sala=descricao_sala)
+inserir_sala(conn, cursor, nome_cidade="Moscow", nome_sala="igreja", descricao_sala=descricao_sala)
 
 # Celeiro
 descricao_sala= """
