@@ -321,3 +321,15 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+
+    def select_mapa_descricao(conn, cursor):
+        cursor.execute("SELECT descricao FROM Mapa WHERE idMapa = 1;")
+
+        # Recuperar o resultado da consulta
+        row = cursor.fetchone()
+
+        # Imprimir a descrição se houver um resultado
+        if row:
+            print(f"Descrição para idMapa 1: {row[0]}")
+        else:
+            print("Não há descrição para idMapa 1.")    
