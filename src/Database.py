@@ -204,7 +204,7 @@ class DataBase():
     def inserir_arma_fogo(connection,id, sala, inventario, nome, dano, distancia, capacidadeMunicao):
         cursor = connection.cursor()
 
-        querry = "CALL inserirBranca(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
+        querry = "CALL inserirFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
             id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
 
         cursor.execute(querry)
@@ -215,7 +215,7 @@ class DataBase():
     def inserir_alimento(connection,id, sala, inventario, status):
         cursor = connection.cursor()
 
-        querry = "CALL inserirBranca(connection,id, sala, inventario, status)" % (
+        querry = "CALL inserirBranca(id, sala, inventario, status)" % (
             connection,id, sala, inventario, status)
 
         cursor.execute(querry)
@@ -226,7 +226,7 @@ class DataBase():
     def inserir_ferramenta(connection,id, sala, inventario, durabilidade):
         cursor = connection.cursor()
 
-        querry = "CALL inserirFerramenta(connection,id, sala, inventario, durabilidade)" % (
+        querry = "CALL inserirFerramenta(id, sala, inventario, durabilidade)" % (
             connection,id, sala, inventario, durabilidade)
 
         cursor.execute(querry)
@@ -234,4 +234,46 @@ class DataBase():
         connection.commit()
         cursor.close()
 
+    def update_ferramenta(connection,id, sala, inventario, durabilidade):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarFerramenta(id, sala, inventario, durabilidade)" % (
+            connection,id, sala, inventario, durabilidade)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_alimento(connection,id, sala, inventario, status):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarAlimento(id, sala, inventario, status)" % (
+            connection,id, sala, inventario, status)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
     
+    def update_arma_branca(connection,id, sala, inventario, nome, dano, material):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarBranca(id, sala, inventario, nome, dano, material)" % (
+            id, sala, inventario, nome, dano, material)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_arma_fogo(connection,id, sala, inventario, nome, dano, distancia, capacidadeMunicao):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
+            id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
