@@ -10,12 +10,12 @@ Este repositório é dedicado ao desenvolvimento de trabalhos para a disciplina 
 
 ## Integrantes do Grupo
 
-| **Matrícula** | **Nome**                        | **Foto**                                                                      |
-| ------------- | ------------------------------- | ----------------------------------------------------------------------------- |
-| 200057421     | Delziron Braz de Lima           | ![Foto Delziron](https://avatars.githubusercontent.com/DelzironBraz)          |
-| 200017519     | Eurico Menezes de Abreu Neto    | ![Foto Eurico](https://avatars.githubusercontent.com/EuricoAbreu)             |
-| 200067923     | João Henrique Marques Calzavara | ![Foto João Henrique](https://avatars.githubusercontent.com/u/71076129?v=4)   |
-| 200062379     | Marcos Vinícius de Deus         | ![Foto Marcos Vinicius](https://avatars.githubusercontent.com/u/87666623?v=4) |
+| **Matrícula** | **Nome**                        | **Foto**                                                                                                   |
+| ------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 200057421     | Delziron Braz de Lima           | <img src="https://avatars.githubusercontent.com/DelzironBraz" width="75px;" alt="Foto Delziron"/>          |
+| 200017519     | Eurico Menezes de Abreu Neto    | <img src="https://avatars.githubusercontent.com/EuricoAbreu" width="75px;" alt="Foto Eurico"/>             |
+| 200067923     | João Henrique Marques Calzavara | <img src="https://avatars.githubusercontent.com/u/71076129?v=4" width="75px;" alt="Foto João Henrique"/>   |
+| 200062379     | Marcos Vinícius de Deus         | <img src="https://avatars.githubusercontent.com/u/87666623?v=4" width="75px;" alt="Foto Marcos Vinicius"/> |
 
 ## Apresentações
 
