@@ -277,3 +277,47 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+
+    def delete_arma_fogo(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarFogo(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_arma_branca(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarBranca(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_alimento(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarAlimento(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_ferramenta(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarFerramenta(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
