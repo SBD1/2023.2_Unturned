@@ -17,8 +17,8 @@ CREATE TABLE Cidade (
 -- Tabela Sala 
 CREATE TABLE Sala  (
     idSala INT PRIMARY KEY,
+    nome VARCHAR(255),
     cidade VARCHAR(255),
-    radioatividade INT NOT NULL,
     descricao VARCHAR(1000) NOT NULL,
     CONSTRAINT fk_sala_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome)
 );

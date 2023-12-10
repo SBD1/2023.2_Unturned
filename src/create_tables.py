@@ -2,12 +2,11 @@ import psycopg2
 
 
 conn = psycopg2.connect(
-    host="172.21.0.3",           
-    database="mydatabase",     
-    user="myuser",             
-    password="mysecretpassword"
+    host="172.18.0.2",           
+    database="unturned",     
+    user="postgres",             
+    password="postgres"
 )
-
 
 cur = conn.cursor()
 
@@ -31,8 +30,8 @@ sql_commands = [
     """
     CREATE TABLE Sala (
         idSala SERIAL PRIMARY KEY,
+        nome VARCHAR(255),
         cidade VARCHAR(255),
-        radioatividade INT NOT NULL,
         descricao VARCHAR(1000) NOT NULL,
         CONSTRAINT fk_sala_cidade FOREIGN KEY (cidade) REFERENCES Cidade(nome)
     )
