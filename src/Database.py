@@ -189,15 +189,135 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+    
+    def inserir_arma_branca(connection,id, sala, inventario, nome, dano, material):
+        cursor = connection.cursor()
 
-    def select_mapa_descricao(conn, cursor):
-        cursor.execute("SELECT descricao FROM Mapa WHERE idMapa = 1;")
+        querry = "CALL inserirBranca(id, sala, inventario, nome, dano, material)" % (
+            id, sala, inventario, nome, dano, material)
 
-        # Recuperar o resultado da consulta
-        row = cursor.fetchone()
+        cursor.execute(querry)
 
-        # Imprimir a descrição se houver um resultado
-        if row:
-            print(f"Descrição para idMapa 1: {row[0]}")
-        else:
-            print("Não há descrição para idMapa 1.")
+        connection.commit()
+        cursor.close()
+    
+    def inserir_arma_fogo(connection,id, sala, inventario, nome, dano, distancia, capacidadeMunicao):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
+            id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def inserir_alimento(connection,id, sala, inventario, status, nome):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirBranca(id, sala, inventario, status, nome)" % (
+            connection,id, sala, inventario, status, nome)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def inserir_ferramenta(connection,id, sala, inventario, durabilidade, nome):
+        cursor = connection.cursor()
+
+        querry = "CALL inserirFerramenta(id, sala, inventario, durabilidade, nome)" % (
+            connection,id, sala, inventario, durabilidade, nome)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_ferramenta(connection,id, sala, inventario, durabilidade, nome):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarFerramenta(id, sala, inventario, durabilidade, nome)" % (
+            connection,id, sala, inventario, durabilidade, nome)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_alimento(connection,id, sala, inventario, status, nome):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarAlimento(id, sala, inventario, status, nome)" % (
+            connection,id, sala, inventario, status, nome)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def update_arma_branca(connection,id, sala, inventario, nome, dano, material):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarBranca(id, sala, inventario, nome, dano, material)" % (
+            id, sala, inventario, nome, dano, material)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def update_arma_fogo(connection,id, sala, inventario, nome, dano, distancia, capacidadeMunicao):
+        cursor = connection.cursor()
+
+        querry = "CALL atualizarFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)" % (
+            id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+
+    def delete_arma_fogo(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarFogo(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_arma_branca(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarBranca(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_alimento(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarAlimento(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_ferramenta(connection,id):
+        cursor = connection.cursor()
+
+        querry = "CALL deletarFerramenta(id)" % (
+            id)
+
+        cursor.execute(querry)
+
+        connection.commit()
+        cursor.close()

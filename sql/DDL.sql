@@ -181,6 +181,7 @@ CREATE TABLE Ferramenta (
     sala INT,
     inventario INT,
     durabilidade INT DEFAULT 100,
+    nome VARCHAR(255) NOT NULL,
     CONSTRAINT fk_ferramenta_item FOREIGN KEY (idItem) REFERENCES Item(idItem),
     CONSTRAINT fk_ferramenta_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
     CONSTRAINT fk_ferramenta_sala FOREIGN KEY (sala) REFERENCES Sala(idSala)
@@ -192,6 +193,7 @@ CREATE TABLE Alimento (
     sala INT,
     inventario INT,
     status VARCHAR(255) DEFAULT 'Excelente',
+    nome VARCHAR(255) NOT NULL,
     CONSTRAINT fk_alimento_item FOREIGN KEY (idItem) REFERENCES Item(idItem),
     CONSTRAINT fk_alimento_inventario FOREIGN KEY (inventario) REFERENCES Inventario(personagem),
     CONSTRAINT fk_alimento_sala FOREIGN KEY (sala) REFERENCES Sala(idSala),
