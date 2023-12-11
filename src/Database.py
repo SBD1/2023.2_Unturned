@@ -430,5 +430,35 @@ class DataBase():
         connection.commit()
         cursor.close()
 
+    def insert_instancia(connection, idInstancia, NPC, sala):
+        cursor = connection.cursor()
+
+        query = "INSERT INTO Instancia (idInstancia, NPC, sala) VALUES (%s, %s, %s)"
+        cursor.execute(query, (idInstancia, NPC, sala))
+
+        connection.commit()
+        cursor.close()
+
+    def update_instancia(connection, idInstancia, NPC, sala):
+        cursor = connection.cursor()
+
+        query = "UPDATE Instancia SET NPC = %s, sala = %s WHERE idInstancia = %s"
+        cursor.execute(query, (NPC, sala, idInstancia))
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_instancia(connection, idInstancia):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Instancia WHERE idInstancia = %s"
+        cursor.execute(query, (idInstancia,))
+
+        connection.commit()
+        cursor.close()
+
+
+
+
 
 
