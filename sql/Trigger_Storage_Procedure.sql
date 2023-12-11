@@ -733,7 +733,7 @@ BEGIN
         RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar um alimento.';
     END IF;
 
-    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status, nome = _nome WHERE idItem = _idItem
+    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status, nome = _nome WHERE idItem = _idItem;
 END $$;
 
 -- Procedimento para deletar um 'Alimento'

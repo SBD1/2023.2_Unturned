@@ -17,12 +17,11 @@ VALUES ('Seattle', 1, 0),
 
 -- Inserir dados na tabela Sala
 INSERT INTO Sala (idSala, nome, cidade, descricao) VALUES
-(1, 'Sala de Reuniões A', 'São Paulo', 'Uma sala de reuniões equipada com tecnologia de ponta para apresentações e videoconferências'),
-(2, 'Auditório B', 'Rio de Janeiro', 'Um amplo auditório com capacidade para 100 pessoas, ideal para palestras e eventos'),
-(3, 'Sala de Treinamento C', 'Belo Horizonte', 'Espaço dedicado para treinamentos corporativos, com mesas configuráveis e recursos audiovisuais'),
-(4, 'Sala de Estudo D', 'São Paulo', 'Ambiente tranquilo e silencioso, projetado para estudos individuais e em grupo'),
-(5, 'Sala de Conferências E', 'Brasília', 'Sala versátil com configuração modular, adequada para conferências, workshops e seminários');
-
+(1, 'Sala de Reuniões A', 'Chicago', 'Uma sala de reuniões equipada com tecnologia de ponta para apresentações e videoconferências'),
+(2, 'Auditório B', 'Formosa', 'Um amplo auditório com capacidade para 100 pessoas, ideal para palestras e eventos'),
+(3, 'Sala de Treinamento C', 'Whitehorse', 'Espaço dedicado para treinamentos corporativos, com mesas configuráveis e recursos audiovisuais'),
+(4, 'Sala de Estudo D', 'Charlottetown', 'Ambiente tranquilo e silencioso, projetado para estudos individuais e em grupo'),
+(5, 'Sala de Conferências E', 'Seattle', 'Sala versátil com configuração modular, adequada para conferências, workshops e seminários');
  
 -- Para inserir veiculo terrestre
 CALL insere_veiculo(1, 1, 'Ferrari', 100, 100, 4::smallint, NULL::int, NULL::int);
@@ -38,13 +37,6 @@ CALL update_veiculo(2, 2, 'Maseratti', 50, 48, 4::smallint, NULL::int, NULL::int
 
 -- Para deletar algum id de veiculo
 CALL removerVeiculo(2);
--- Inserir dados na tabela Personagem
-INSERT INTO Personagem (idPersonagem, cidade, tipo)
-VALUES (1, 'Seattle', 'NPC'),
-       (2, 'Charlottetown', 'PC'),
-       (3, 'Whitehorse', 'NPC'),
-       (4, 'Formosa', 'PC'),
-       (5, 'Chicago', 'NPC');
 
 -- Para inserir um PC por procedure
 CALL inserirPersonagem(1, 1, 'Joao', 100, 100, NULL, NULL, NULL);
@@ -76,23 +68,19 @@ CALL deleteZumbi(1);
 CALL deleteAnimal(1);
 
 -- Inserir dados na tabela Instancia
-INSERT INTO Instancia (idInstancia, NPC, cidade)
-    VALUES (1, 1, 'Formosa'),
-           (2, 1, 'Chicago'),
-           (3, 1, 'Seattle'),
-           (4, 1, 'Formosa'),
-           (5, 3, 'Whitehorse'),
-           (6, 3, 'Charlottetown'),
-           (7, 3, 'Chicago'),
-           (8, 3, 'Charlottetown');
+INSERT INTO Instancia (idInstancia, NPC, sala)
+    VALUES (1, 2, 1),
+           (2, 2, 1),
+           (3, 2, 1),
+           (4, 2, 2),
+           (5, 3, 2),
+           (6, 3, 3),
+           (7, 3, 3),
+           (8, 3, 4);
 
 -- Inserir dados na tabela Inventario
 INSERT INTO Inventario (Personagem, quantidadeItens, maxItens)
-    VALUES (1, 0, 10),
-    (2, 3, 60),
-    (3, 0, 20),
-    (4, 3, 40),
-    (5, 0, 8);
+    VALUES (1, 0, 10)
 
 -- Inserir dados na tabela Item
 INSERT INTO Item (idItem, cidade, personagem, tipo)
