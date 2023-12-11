@@ -511,12 +511,29 @@ class DataBase():
         connection.commit()
         cursor.close()
 
+    def inserir_receita(connection,idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao):
+        cursor = connection.cursor()
 
+        query = "INSERT INTO Receita (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao))
 
+        connection.commit()
+        cursor.close()
 
+    def update_receita(connection,idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao):
+        cursor = connection.cursor()
 
+        query = "UPDATE Receita SET idReceita = %s, idCriador = %s,idItem = %s, Resultado = %s,Requisitos = %s, TempoCriacao = %s WHERE idCriador = %s"
+        cursor.execute(query, (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao))
 
+        connection.commit()
+        cursor.close()
 
+    def delete_receita(connection, idReceita):
+        cursor = connection.cursor()
 
+        query = "DELETE FROM Receita WHERE idReceita = %s"
+        cursor.execute(query, (idReceita))
 
-
+        connection.commit()
+        cursor.close()

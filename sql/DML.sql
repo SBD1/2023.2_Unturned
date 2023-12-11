@@ -78,6 +78,15 @@ INSERT INTO Instancia (idInstancia, NPC, sala)
            (7, 3, 3),
            (8, 3, 4);
 
+-- Para dar update em uma Instancia
+UPDATE Instancia SET NPC = %s, sala = %s WHERE idInstancia = %s
+UPDATE Instancia SET NPC = 1, sala = 2 WHERE idInstancia = 1
+
+
+-- Para deletar uma instancia
+DELETE FROM Instancia WHERE idInstancia = %s
+DELETE FROM Instancia WHERE idInstancia = 1
+
 -- Inserir dados na tabela Inventario
 INSERT INTO Inventario (Personagem, quantidadeItens, maxItens)
     VALUES (1, 0, 10)
@@ -114,5 +123,41 @@ CALL deletarFogo(id)
 
 -- Para deletar arma branca
 CALL deletarBranca(id)
+
+-- Para inserir no criador
+INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (%s, %s, %s)
+INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (1, 1, 'Criador')
+
+-- Para dar update no criador
+UPDATE Criador SET idPersonagem = %s, nome = %s WHERE idCriador = %s
+UPDATE Criador SET idPersonagem = 1, nome = 'Criador1' WHERE idCriador = 1
+
+-- Para remover um criador
+DELETE FROM Criador WHERE idCriador = %s
+DELETE FROM Criador WHERE idCriador = 1
+
+-- Para inserir uma missao (Estado tem que ser 'Doing' ou 'Done')
+INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (%s, %s, %s, %s, %s)
+INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (1, 1, 'Matar 50 zumbis', 'Diamante', 'Doing')
+
+-- Para dar update em uma missao
+UPDATE Missao SET idPersonagem = %s, Descricao = %s, Recompensa = %s, Estado = %s WHERE idMissao = %s
+UPDATE Missao SET idPersonagem = 1, Descricao = 'Matar 50 zumbis', Recompensa = 'Diamantes', Estado = 'Done'  WHERE idMissao = 1
+
+-- Para deletar uma missao
+DELETE FROM Missao WHERE idMissao = %s
+DELETE FROM Missao WHERE idMissao = 1
+
+-- Para inserir uma receita
+INSERT INTO Receita (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao) VALUES (%s, %s, %s, %s, %s, %s)
+INSERT INTO Receita (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao) VALUES (1, 1, 1, 'Item', 'isso', 10)
+
+-- Para dar update em uma receita
+UPDATE Receita SET idReceita = %s, idCriador = %s,idItem = %s, Resultado = %s,Requisitos = %s, TempoCriacao = %s WHERE idCriador = %s
+UPDATE Receita SET idReceita = 1, idCriador = 1,idItem = 1, Resultado = 'Item1',Requisitos = 'Diamante', TempoCriacao = 15 WHERE idCriador = 1
+
+-- Para remover uma Receita
+DELETE FROM Receita WHERE idReceita = %s
+DELETE FROM Receita WHERE idReceita = 1
 
 COMMIT;
