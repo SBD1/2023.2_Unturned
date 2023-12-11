@@ -82,64 +82,37 @@ INSERT INTO Instancia (idInstancia, NPC, sala)
 INSERT INTO Inventario (Personagem, quantidadeItens, maxItens)
     VALUES (1, 0, 10)
 
--- Inserir dados na tabela Item
-INSERT INTO Item (idItem, cidade, personagem, tipo)
-VALUES
-    (1, 'Seattle', 2, 'Ferramenta'),
-    (2, 'Formosa', 2, 'Alimento'),
-    (3, 'Seattle', 4, 'Alimento'),
-    (4, 'Formosa', 4, 'Alimento'),         
-    (5, 'Formosa', 2, 'Arma'),
-    (6, 'Formosa', 4, 'Arma');
+-- Para inserir uma arma branca
+CALL inserirBranca(1, 1, 1, 'Katana', 100, 'ferro')
 
+-- Para inserir uma arma de fogo
+CALL inserirFogo(2, 2, 1, 'Ak47', 100, 100, 30)
 
--- Inserir dados na tabela Ferramenta
-INSERT INTO Ferramenta(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Ferramenta';
+-- Para inserir um alimento
+CALL inserirAlimento(3, 2, 1, 'Bom', 'Amora')
 
-UPDATE Ferramenta SET durabilidade = 30
-    WHERE idItem = 1;
+-- Para inserir uma ferramenta
+CALL inserirFerramenta(4, 3, 1, 60, 'Chave de fenda')
 
--- Inserir dados na tabela Alimento
-INSERT INTO Alimento(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Alimento';
+-- Para dar update em ferramenta
+CALL atualizarFerramenta(id, sala, inventario, durabilidade, nome)
 
-UPDATE Alimento SET status = 'Excelente'
-    WHERE idItem = 2;
+-- Para dar update em alimento
+CALL atualizarAlimento(id, sala, inventario, status, nome)
 
-UPDATE Alimento SET status = 'Bom'
-    WHERE idItem = 3;
+-- Para update em arma de fogo
+CALL atualizarFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
 
-UPDATE Alimento SET status = 'Pessimo'
-    WHERE idItem = 4;
+-- Para update em arma branca
+CALL atualizarBranca(id, sala, inventario, nome, dano, material)
 
--- Inserir dados na tabela Arma
-INSERT INTO Arma(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Arma';
+-- Para deletar alimento
+CALL deletarAlimento(id)
 
-UPDATE Arma SET classe = 'Branca', dano = 100
-    WHERE idItem = 5;
+-- Para deletar arma de fogo
+CALL deletarFogo(id)
 
-UPDATE Arma SET classe = 'Fogo', dano = 300
-    WHERE idItem = 6;
-
--- Inserir dados na tabela Fogo
-INSERT INTO Fogo(idItem)
-    SELECT idItem FROM Arma
-        WHERE classe = 'Fogo';
-
-UPDATE Fogo SET nome = 'Pistola', distancia = '10', capacidadeMunicao = '13'
-    WHERE idItem = 6;
-
--- Inserir dados na tabela Branca
-INSERT INTO Branca(idItem)
-    SELECT idItem FROM Arma
-        WHERE classe = 'Branca';
-
-UPDATE Branca SET nome = 'Faca', material = 'Metal'
-    WHERE idItem = 5;
+-- Para deletar arma branca
+CALL deletarBranca(id)
 
 COMMIT;

@@ -791,6 +791,48 @@ sql_commands = [
         DELETE FROM Fogo WHERE idItem = _idItem;
         CALL deletarArma(_idItem);
     END $$;
+    """,
+    """
+    CREATE OR REPLACE FUNCTION atualizarQuantidadeItens()
+    RETURNS TRIGGER AS $$
+    DECLARE
+        _nova_quantidade INT;
+    BEGIN
+        IF TG_OP = 'INSERT' THEN
+            UPDATE Inventario
+            SET quantidadeItens = quantidadeItens + 1
+            WHERE personagem = NEW.inventario
+            RETURNING quantidadeItens INTO _nova_quantidade;
+        ELSIF TG_OP = 'DELETE' THEN
+            UPDATE Inventario
+            SET quantidadeItens = quantidadeItens - 1
+            WHERE personagem = OLD.inventario
+            RETURNING quantidadeItens INTO _nova_quantidade;
+        END IF;
+
+        IF _nova_quantidade > (SELECT maxItens FROM Inventario WHERE personagem = NEW.inventario) THEN
+            RAISE EXCEPTION 'A quantidade de itens excede o limite máximo no inventário.';
+        END IF;
+
+        RETURN NULL;
+    END;
+    $$ LANGUAGE plpgsql;
+    
+    CREATE TRIGGER atualizar_quantidade_itens_alimento
+    AFTER INSERT OR DELETE ON Alimento
+    FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+    
+    CREATE TRIGGER atualizar_quantidade_itens_ferramenta
+    AFTER INSERT OR DELETE ON Ferramenta
+    FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+
+    CREATE TRIGGER atualizar_quantidade_itens_branca
+    AFTER INSERT OR DELETE ON Branca
+    FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+    
+    CREATE TRIGGER atualizar_quantidade_itens_fogo
+    AFTER INSERT OR DELETE ON Fogo
+    FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
     """
 ]
 
