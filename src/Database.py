@@ -349,35 +349,32 @@ class DataBase():
     def insert_mapa(connection, id, dimensao, nome, descricao):
         cursor = connection.cursor()
 
-        querry = "INSERT INTO Mapa (idMapa, dimensao, nomeMapa, descricao)(id, dimensao, nome, descricao) VALUES (id, dimensao, nome, descricao)" % (
-            id, dimensao, nome, descricao)
-
-        cursor.execute(querry)
+        query = "INSERT INTO Mapa (idMapa, dimensao, nomeMapa, descricao) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (id, dimensao, nome, descricao))
 
         connection.commit()
         cursor.close()
+
 
     def insert_cidade(connection, nome, mapa):
         cursor = connection.cursor()
 
-        querry = "INSERT INTO Cidade (nome, mapa, nroConstrucoes) VALUES (nome, mapa, DEFAULT)" % (
-            nome, mapa)
-
-        cursor.execute(querry)
+        query = "INSERT INTO Cidade (nome, mapa, nroConstrucoes) VALUES (%s, %s, DEFAULT)"
+        cursor.execute(query, (nome, mapa))
 
         connection.commit()
         cursor.close()
+
 
     def insert_sala(connection, id, nome, cidade, descricao):
         cursor = connection.cursor()
 
-        querry = "INSERT INTO Sala (idSala, nome, cidade, descricao) VALUES (id, nome, cidade, descricao)" % (
-            id, nome, cidade, descricao)
-
-        cursor.execute(querry)
+        query = "INSERT INTO Sala (idSala, nome, cidade, descricao) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (id, nome, cidade, descricao))
 
         connection.commit()
         cursor.close()
+
 
     def update_mapa(connection, id, dimensao, nome, descricao):
         cursor = connection.cursor()
