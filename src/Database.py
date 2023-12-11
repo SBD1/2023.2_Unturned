@@ -457,6 +457,64 @@ class DataBase():
         connection.commit()
         cursor.close()
 
+    def insert_missao(connection, idMissao, idPersonagem, descricao, recompensa, estado):
+        cursor = connection.cursor()
+
+        query = "INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (idMissao, idPersonagem, descricao, recompensa, estado))
+
+        connection.commit()
+        cursor.close()
+
+    def update_missao(connection, idMissao, idPersonagem, descricao, recompensa, estado):
+        cursor = connection.cursor()
+
+        query = "UPDATE Missao SET idPersonagem = %s, Descricao = %s, Recompensa = %s, Estado = %s WHERE idMissao = %s"
+        cursor.execute(query, (idPersonagem, descricao, recompensa, estado, idMissao))
+
+        connection.commit()
+        cursor.close()
+    
+    def delete_missao(connection, idMissao):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Missao WHERE idMissao = %s"
+        cursor.execute(query, (idMissao,))
+
+        connection.commit()
+        cursor.close()
+    
+    def insert_criador(connection, idCriador, idPersonagem, nome):
+        cursor = connection.cursor()
+
+        query = "INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (%s, %s, %s)"
+        cursor.execute(query, (idCriador, idPersonagem, nome))
+
+        connection.commit()
+        cursor.close()
+
+    def update_criador(connection, idCriador, idPersonagem, nome):
+        cursor = connection.cursor()
+
+        query = "UPDATE Criador SET idPersonagem = %s, nome = %s WHERE idCriador = %s"
+        cursor.execute(query, (idPersonagem, nome, idCriador))
+
+        connection.commit()
+        cursor.close()
+
+    def delete_criador(connection, idCriador):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Criador WHERE idCriador = %s"
+        cursor.execute(query, (idCriador,))
+
+        connection.commit()
+        cursor.close()
+
+
+
+
+
 
 
 
