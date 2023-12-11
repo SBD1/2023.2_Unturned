@@ -378,3 +378,31 @@ class DataBase():
 
         connection.commit()
         cursor.close()
+
+    def update_mapa(connection, id, dimensao, nome, descricao):
+        cursor = connection.cursor()
+
+        query = "UPDATE Mapa SET dimensao = %s, nomeMapa = %s, descricao = %s WHERE idMapa = %s"
+        cursor.execute(query, (dimensao, nome, descricao, id))
+
+        connection.commit()
+        cursor.close()
+
+    def update_cidade(connection, nome, mapa, nroConstrucoes):
+        cursor = connection.cursor()
+
+        query = "UPDATE Cidade SET mapa = %s, nroConstrucoes = %s WHERE nome = %s"
+        cursor.execute(query, (mapa, nroConstrucoes, nome))
+
+        connection.commit()
+        cursor.close()
+
+    def update_sala(connection, id, nome, cidade, descricao):
+        cursor = connection.cursor()
+
+        query = "UPDATE Sala SET nome = %s, cidade = %s, descricao = %s WHERE idSala = %s"
+        cursor.execute(query, (nome, cidade, descricao, id))
+
+        connection.commit()
+        cursor.close()
+
