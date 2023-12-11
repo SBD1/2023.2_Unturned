@@ -403,3 +403,32 @@ class DataBase():
         connection.commit()
         cursor.close()
 
+    def delete_mapa(connection, id):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Mapa WHERE idMapa = %s"
+        cursor.execute(query, (id,))
+
+        connection.commit()
+        cursor.close()
+
+    def delete_cidade(connection, nome):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Cidade WHERE nome = %s"
+        cursor.execute(query, (nome,))
+
+        connection.commit()
+        cursor.close()
+
+    def delete_sala(connection, id):
+        cursor = connection.cursor()
+
+        query = "DELETE FROM Sala WHERE idSala = %s"
+        cursor.execute(query, (id,))
+
+        connection.commit()
+        cursor.close()
+
+
+
