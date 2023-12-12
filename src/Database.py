@@ -385,7 +385,8 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "UPDATE Mapa SET dimensao = %s, nomeMapa = %s, descricao = %s WHERE idMapa = %s"
-        cursor.execute(query, (dimensao, nome, descricao, id))
+        parameters = (dimensao, nome, descricao, id)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -394,7 +395,8 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "UPDATE Cidade SET mapa = %s, nroConstrucoes = %s WHERE nome = %s"
-        cursor.execute(query, (mapa, nroConstrucoes, nome))
+        parameters = (mapa, nroConstrucoes, nome)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -403,7 +405,8 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "UPDATE Sala SET nome = %s, cidade = %s, descricao = %s WHERE idSala = %s"
-        cursor.execute(query, (nome, cidade, descricao, id))
+        parameters = (nome, cidade, descricao, id)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -412,7 +415,8 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "DELETE FROM Mapa WHERE idMapa = %s"
-        cursor.execute(query, (id,))
+        parameters = (id)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -431,7 +435,7 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "DELETE FROM Sala WHERE idSala = %s"
-        parameters = id
+        parameters = (id)
         cursor.execute(query, parameters)
 
         connection.commit()
@@ -451,25 +455,27 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "UPDATE Instancia SET NPC = %s, sala = %s WHERE idInstancia = %s"
-        cursor.execute(query, (NPC, sala, idInstancia))
+        parameters = (NPC, sala, idInstancia)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
     
-    def delete_instancia(connection, idInstancia):
-        cursor = connection.cursor()
-
-        query = "DELETE FROM Instancia WHERE idInstancia = %s"
-        cursor.execute(query, (idInstancia,))
-
-        connection.commit()
+    def delete_instancia(conn, instance_id):
+        query = "DELETE FROM Instancia WHERE idInstancia = %s;"
+        parameters = (instance_id,)
+        cursor = conn.cursor()
+        cursor.execute(query, parameters)
+        conn.commit()
         cursor.close()
+
 
     def insert_missao(connection, idMissao, idPersonagem, descricao, recompensa, estado):
         cursor = connection.cursor()
 
         query = "INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(query, (idMissao, idPersonagem, descricao, recompensa, estado))
+        parameters = (idMissao, idPersonagem, descricao, recompensa, estado)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -496,7 +502,8 @@ class DataBase():
         cursor = connection.cursor()
 
         query = "INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (%s, %s, %s)"
-        cursor.execute(query, (idCriador, idPersonagem, nome))
+        parameters = (idCriador, idPersonagem, nome)
+        cursor.execute(query, parameters)
 
         connection.commit()
         cursor.close()
@@ -542,23 +549,6 @@ class DataBase():
 
         query = "DELETE FROM Receita WHERE idReceita = %s"
         cursor.execute(query, (idReceita))
-
-        connection.commit()
-        cursor.close()
-
-    def create_inventary(connection, cursor):
-
-        comando_sql = """
-        CREATE TABLE Inventario (
-            personagem INT PRIMARY KEY,
-            quantidadeItens INT DEFAULT 0,
-            maxItens INT DEFAULT 20,
-            CONSTRAINT fk_inventario_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
-            CONSTRAINT inventario_quantidadeItem_check CHECK (quantidadeItens < maxItens)
-        );
-        """
-
-        cursor.execute(comando_sql)
 
         connection.commit()
         cursor.close()
@@ -1479,18 +1469,21 @@ class DataBase():
                 RETURN NULL;
             END;
             $$ LANGUAGE plpgsql;
-            
+            """,
+            """
             CREATE TRIGGER atualizar_quantidade_itens_alimento
             AFTER INSERT OR DELETE ON Alimento
             FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
-            
+            """,
+            """
             CREATE TRIGGER atualizar_quantidade_itens_ferramenta
             AFTER INSERT OR DELETE ON Ferramenta
             FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
             CREATE TRIGGER atualizar_quantidade_itens_branca
             AFTER INSERT OR DELETE ON Branca
             FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
-            
+            """,
+            """
             CREATE TRIGGER atualizar_quantidade_itens_fogo
             AFTER INSERT OR DELETE ON Fogo
             FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
@@ -1503,7 +1496,7 @@ class DataBase():
         conn.commit()
 
 
-    
+
     def create_tables(conn, cursor):
         sql_commands = [
             """
@@ -1886,14 +1879,15 @@ class DataBase():
         DataBase.inserir_ferramenta(conn, id=2, sala=1, durabilidade=10, nome="corda")
         DataBase.inserir_ferramenta(conn, id=3, sala=1, durabilidade=5, nome="isqueiro")
         DataBase.inserir_arma_fogo(conn, id=4, sala=4, nome="pistola", dano=45, distancia=10, capacidadeMunicao=8)
+        DataBase.inserir_alimento(conn, id = 5, sala = 1, status = 'Bom', nome = 'Jaca')
         DataBase.create_new_zumbi(conn, id = 2, vida = 100, classe = 'Andarilho', dano = 30)
         DataBase.create_new_zumbi(conn, id = 3, vida = 100, classe = 'Corredor', dano = 15)
         DataBase.insert_instancia(conn, idInstancia = 1, NPC = 3, sala = 1)
         DataBase.insert_instancia(conn, idInstancia = 2, NPC = 2, sala = 2)
-        DataBase.insert_veiculo_aereo(conn, id = 1, sala = 1, )
+        DataBase.insert_veiculo_aereo(conn, id = 1, sala = 1, nome = 'A380', vida = 100, combustivel = 70, maxAltitude = 10000)
+        DataBase.insert_veiculo_terrestre(conn, id = 2, sala = 2, nome = 'Brasília amarela', vida = 100, combustivel = 60, numRodas = 4)
+        #DataBase.inserir_receita(conn, )
         #DataBase.inseri
         #inserir_arma_fogo(connection,id, sala, nome, dano, distancia, capacidadeMunicao)
-
-
         
         

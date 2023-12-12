@@ -20,6 +20,8 @@ def russia():
     print("Vamos criar seu personagem!")
     name = input("Escolha o nome do seu personagem: ")
     DataBase.create_new_pc(conn, 1, 1, name, 100, 100)
+    DataBase.insert_missao(conn, idMissao = 1, idPersonagem = 1, descricao = 'Sobreviva à Russia', recompensa = 'Diamantes', estado = 'Doing')
+    DataBase.insert_criador(conn, idCriador = 1, idPersonagem = 1, nome = 'Criador1')
     DataBase.inserir_inventario(conn, cur)
     DataBase.select_mapa_descricao(conn, cur)
     cidade_arruinada()
@@ -114,6 +116,7 @@ def casa_abandonada_com_faca():
         elif escolha == 'lutar':
             print("\nVocê decide enfrentar o zumbi dentro da casa.")
             print("Com a faca em mãos, você consegue derrotar o zumbi.")
+            DataBase.delete_instancia(conn, 1)
             casa_abandonada_exploracao()
 
         elif escolha == 'ajuda':
@@ -170,7 +173,7 @@ def rua_deserta():
 
         if escolha == 'lutar':
             print("\nVocê decide enfrentar os três zumbis. Uma escolha ousada, mas arriscada.")
-            Mortes.death_by_corage()  
+            Mortes.death_by_courage()
 
         elif escolha == 'fugir':
             print("\nVocê decide correr para dentro da igreja, dividindo os zumbis.")
