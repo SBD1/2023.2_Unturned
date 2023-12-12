@@ -5,7 +5,7 @@ from classes import Mortes
 import psycopg2
 
 conn = psycopg2.connect(
-    host="172.23.0.2",           
+    host="172.25.0.2",           
     database="unturned",     
     user="postgres",             
     password="postgres"

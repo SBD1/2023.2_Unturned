@@ -1886,8 +1886,5 @@ class DataBase():
         DataBase.insert_instancia(conn, idInstancia = 2, NPC = 2, sala = 2)
         DataBase.insert_veiculo_aereo(conn, id = 1, sala = 1, nome = 'A380', vida = 100, combustivel = 70, maxAltitude = 10000)
         DataBase.insert_veiculo_terrestre(conn, id = 2, sala = 2, nome = 'Brasília amarela', vida = 100, combustivel = 60, numRodas = 4)
-        #DataBase.inserir_receita(conn, )
-        #DataBase.inseri
-        #inserir_arma_fogo(connection,id, sala, nome, dano, distancia, capacidadeMunicao)
         
         
