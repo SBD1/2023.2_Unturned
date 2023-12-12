@@ -733,7 +733,7 @@ BEGIN
         RAISE EXCEPTION 'Todos os campos devem ser preenchidos para atualizar um alimento.';
     END IF;
 
-    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status, nome = _nome WHERE idItem = _idItem
+    UPDATE Alimento SET sala = _sala, inventario = _inventario, status = _status, nome = _nome WHERE idItem = _idItem;
 END $$;
 
 -- Procedimento para deletar um 'Alimento'
@@ -816,3 +816,51 @@ BEGIN
     DELETE FROM Fogo WHERE idItem = _idItem;
     CALL deletarArma(_idItem);
 END $$;
+
+------------------------------------------------------------------------------------------------
+
+-- Trigger para adicionar ou subtrair da quantidadeItens do inventario
+CREATE OR REPLACE FUNCTION atualizarQuantidadeItens()
+RETURNS TRIGGER AS $$
+DECLARE
+    _nova_quantidade INT;
+BEGIN
+    -- Adiciona 1 à quantidadeItens do inventario após a inserção
+    IF TG_OP = 'INSERT' THEN
+        UPDATE Inventario
+        SET quantidadeItens = quantidadeItens + 1
+        WHERE personagem = NEW.inventario
+        RETURNING quantidadeItens INTO _nova_quantidade;
+    -- Subtrai 1 da quantidadeItens do inventario após a deleção
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE Inventario
+        SET quantidadeItens = quantidadeItens - 1
+        WHERE personagem = OLD.inventario
+        RETURNING quantidadeItens INTO _nova_quantidade;
+    END IF;
+
+    -- Verifica se maxItens é maior ou igual a quantidadeItens
+    IF _nova_quantidade > (SELECT maxItens FROM Inventario WHERE personagem = NEW.inventario) THEN
+        RAISE EXCEPTION 'A quantidade de itens excede o limite máximo no inventário.';
+    END IF;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Triggers para Alimento, Ferramenta, Branca, Fogo
+CREATE TRIGGER atualizar_quantidade_itens_alimento
+AFTER INSERT OR DELETE ON Alimento
+FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+
+CREATE TRIGGER atualizar_quantidade_itens_ferramenta
+AFTER INSERT OR DELETE ON Ferramenta
+FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+
+CREATE TRIGGER atualizar_quantidade_itens_branca
+AFTER INSERT OR DELETE ON Branca
+FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();
+
+CREATE TRIGGER atualizar_quantidade_itens_fogo
+AFTER INSERT OR DELETE ON Fogo
+FOR EACH ROW EXECUTE FUNCTION atualizarQuantidadeItens();

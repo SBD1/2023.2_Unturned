@@ -172,7 +172,7 @@ CREATE TABLE Inventario (
     quantidadeItens INT DEFAULT 0,
     maxItens INT DEFAULT 20,
     CONSTRAINT fk_inventario_personagem FOREIGN KEY (personagem) REFERENCES Personagem(idPersonagem),
-    CONSTRAINT inventario_quantidadeItem_check CHECK (quantidadeItens < maxItens)
+    CONSTRAINT inventario_quantidadeItem_check CHECK (quantidadeItens <= maxItens)
 );
 
 -- Tabela das Ferramentas

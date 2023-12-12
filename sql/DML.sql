@@ -17,12 +17,11 @@ VALUES ('Seattle', 1, 0),
 
 -- Inserir dados na tabela Sala
 INSERT INTO Sala (idSala, nome, cidade, descricao) VALUES
-(1, 'Sala de Reuniões A', 'São Paulo', 'Uma sala de reuniões equipada com tecnologia de ponta para apresentações e videoconferências'),
-(2, 'Auditório B', 'Rio de Janeiro', 'Um amplo auditório com capacidade para 100 pessoas, ideal para palestras e eventos'),
-(3, 'Sala de Treinamento C', 'Belo Horizonte', 'Espaço dedicado para treinamentos corporativos, com mesas configuráveis e recursos audiovisuais'),
-(4, 'Sala de Estudo D', 'São Paulo', 'Ambiente tranquilo e silencioso, projetado para estudos individuais e em grupo'),
-(5, 'Sala de Conferências E', 'Brasília', 'Sala versátil com configuração modular, adequada para conferências, workshops e seminários');
-
+(1, 'Sala de Reuniões A', 'Chicago', 'Uma sala de reuniões equipada com tecnologia de ponta para apresentações e videoconferências'),
+(2, 'Auditório B', 'Formosa', 'Um amplo auditório com capacidade para 100 pessoas, ideal para palestras e eventos'),
+(3, 'Sala de Treinamento C', 'Whitehorse', 'Espaço dedicado para treinamentos corporativos, com mesas configuráveis e recursos audiovisuais'),
+(4, 'Sala de Estudo D', 'Charlottetown', 'Ambiente tranquilo e silencioso, projetado para estudos individuais e em grupo'),
+(5, 'Sala de Conferências E', 'Seattle', 'Sala versátil com configuração modular, adequada para conferências, workshops e seminários');
  
 -- Para inserir veiculo terrestre
 CALL insere_veiculo(1, 1, 'Ferrari', 100, 100, 4::smallint, NULL::int, NULL::int);
@@ -38,13 +37,6 @@ CALL update_veiculo(2, 2, 'Maseratti', 50, 48, 4::smallint, NULL::int, NULL::int
 
 -- Para deletar algum id de veiculo
 CALL removerVeiculo(2);
--- Inserir dados na tabela Personagem
-INSERT INTO Personagem (idPersonagem, cidade, tipo)
-VALUES (1, 'Seattle', 'NPC'),
-       (2, 'Charlottetown', 'PC'),
-       (3, 'Whitehorse', 'NPC'),
-       (4, 'Formosa', 'PC'),
-       (5, 'Chicago', 'NPC');
 
 -- Para inserir um PC por procedure
 CALL inserirPersonagem(1, 1, 'Joao', 100, 100, NULL, NULL, NULL);
@@ -76,82 +68,96 @@ CALL deleteZumbi(1);
 CALL deleteAnimal(1);
 
 -- Inserir dados na tabela Instancia
-INSERT INTO Instancia (idInstancia, NPC, cidade)
-    VALUES (1, 1, 'Formosa'),
-           (2, 1, 'Chicago'),
-           (3, 1, 'Seattle'),
-           (4, 1, 'Formosa'),
-           (5, 3, 'Whitehorse'),
-           (6, 3, 'Charlottetown'),
-           (7, 3, 'Chicago'),
-           (8, 3, 'Charlottetown');
+INSERT INTO Instancia (idInstancia, NPC, sala)
+    VALUES (1, 2, 1),
+           (2, 2, 1),
+           (3, 2, 1),
+           (4, 2, 2),
+           (5, 3, 2),
+           (6, 3, 3),
+           (7, 3, 3),
+           (8, 3, 4);
+
+-- Para dar update em uma Instancia
+UPDATE Instancia SET NPC = %s, sala = %s WHERE idInstancia = %s
+UPDATE Instancia SET NPC = 1, sala = 2 WHERE idInstancia = 1
+
+
+-- Para deletar uma instancia
+DELETE FROM Instancia WHERE idInstancia = %s
+DELETE FROM Instancia WHERE idInstancia = 1
 
 -- Inserir dados na tabela Inventario
 INSERT INTO Inventario (Personagem, quantidadeItens, maxItens)
-    VALUES (1, 0, 10),
-    (2, 3, 60),
-    (3, 0, 20),
-    (4, 3, 40),
-    (5, 0, 8);
+    VALUES (1, 0, 10)
 
--- Inserir dados na tabela Item
-INSERT INTO Item (idItem, cidade, personagem, tipo)
-VALUES
-    (1, 'Seattle', 2, 'Ferramenta'),
-    (2, 'Formosa', 2, 'Alimento'),
-    (3, 'Seattle', 4, 'Alimento'),
-    (4, 'Formosa', 4, 'Alimento'),         
-    (5, 'Formosa', 2, 'Arma'),
-    (6, 'Formosa', 4, 'Arma');
+-- Para inserir uma arma branca
+CALL inserirBranca(1, 1, 1, 'Katana', 100, 'ferro')
 
+-- Para inserir uma arma de fogo
+CALL inserirFogo(2, 2, 1, 'Ak47', 100, 100, 30)
 
--- Inserir dados na tabela Ferramenta
-INSERT INTO Ferramenta(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Ferramenta';
+-- Para inserir um alimento
+CALL inserirAlimento(3, 2, 1, 'Bom', 'Amora')
 
-UPDATE Ferramenta SET durabilidade = 30
-    WHERE idItem = 1;
+-- Para inserir uma ferramenta
+CALL inserirFerramenta(4, 3, 1, 60, 'Chave de fenda')
 
--- Inserir dados na tabela Alimento
-INSERT INTO Alimento(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Alimento';
+-- Para dar update em ferramenta
+CALL atualizarFerramenta(id, sala, inventario, durabilidade, nome)
 
-UPDATE Alimento SET status = 'Excelente'
-    WHERE idItem = 2;
+-- Para dar update em alimento
+CALL atualizarAlimento(id, sala, inventario, status, nome)
 
-UPDATE Alimento SET status = 'Bom'
-    WHERE idItem = 3;
+-- Para update em arma de fogo
+CALL atualizarFogo(id, sala, inventario, nome, dano, distancia, capacidadeMunicao)
 
-UPDATE Alimento SET status = 'Pessimo'
-    WHERE idItem = 4;
+-- Para update em arma branca
+CALL atualizarBranca(id, sala, inventario, nome, dano, material)
 
--- Inserir dados na tabela Arma
-INSERT INTO Arma(idItem)
-    SELECT idItem FROM Item
-        WHERE tipo = 'Arma';
+-- Para deletar alimento
+CALL deletarAlimento(id)
 
-UPDATE Arma SET classe = 'Branca', dano = 100
-    WHERE idItem = 5;
+-- Para deletar arma de fogo
+CALL deletarFogo(id)
 
-UPDATE Arma SET classe = 'Fogo', dano = 300
-    WHERE idItem = 6;
+-- Para deletar arma branca
+CALL deletarBranca(id)
 
--- Inserir dados na tabela Fogo
-INSERT INTO Fogo(idItem)
-    SELECT idItem FROM Arma
-        WHERE classe = 'Fogo';
+-- Para inserir no criador
+INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (%s, %s, %s)
+INSERT INTO Criador (idCriador, idPersonagem, nome) VALUES (1, 1, 'Criador')
 
-UPDATE Fogo SET nome = 'Pistola', distancia = '10', capacidadeMunicao = '13'
-    WHERE idItem = 6;
+-- Para dar update no criador
+UPDATE Criador SET idPersonagem = %s, nome = %s WHERE idCriador = %s
+UPDATE Criador SET idPersonagem = 1, nome = 'Criador1' WHERE idCriador = 1
 
--- Inserir dados na tabela Branca
-INSERT INTO Branca(idItem)
-    SELECT idItem FROM Arma
-        WHERE classe = 'Branca';
+-- Para remover um criador
+DELETE FROM Criador WHERE idCriador = %s
+DELETE FROM Criador WHERE idCriador = 1
 
-UPDATE Branca SET nome = 'Faca', material = 'Metal'
-    WHERE idItem = 5;
+-- Para inserir uma missao (Estado tem que ser 'Doing' ou 'Done')
+INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (%s, %s, %s, %s, %s)
+INSERT INTO Missao (idMissao, idPersonagem, Descricao, Recompensa, Estado) VALUES (1, 1, 'Matar 50 zumbis', 'Diamante', 'Doing')
+
+-- Para dar update em uma missao
+UPDATE Missao SET idPersonagem = %s, Descricao = %s, Recompensa = %s, Estado = %s WHERE idMissao = %s
+UPDATE Missao SET idPersonagem = 1, Descricao = 'Matar 50 zumbis', Recompensa = 'Diamantes', Estado = 'Done'  WHERE idMissao = 1
+
+-- Para deletar uma missao
+DELETE FROM Missao WHERE idMissao = %s
+DELETE FROM Missao WHERE idMissao = 1
+
+-- Para inserir uma receita
+INSERT INTO Receita (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao) VALUES (%s, %s, %s, %s, %s, %s)
+INSERT INTO Receita (idReceita, idCriador, idItem, Resultado, Requisitos, TempoCriacao) VALUES (1, 1, 1, 'Item', 'isso', 10)
+
+-- Para dar update em uma receita
+UPDATE Receita SET idReceita = %s, idCriador = %s,idItem = %s, Resultado = %s,Requisitos = %s, TempoCriacao = %s WHERE idCriador = %s
+UPDATE Receita SET idReceita = 1, idCriador = 1,idItem = 1, Resultado = 'Item1',Requisitos = 'Diamante', TempoCriacao = 15 WHERE idCriador = 1
+
+-- Para remover uma Receita
+DELETE FROM Receita WHERE idReceita = %s
+DELETE FROM Receita WHERE idReceita = 1
 
 COMMIT;

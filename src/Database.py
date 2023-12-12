@@ -1473,7 +1473,7 @@ class DataBase():
                     WHERE personagem = OLD.inventario
                     RETURNING quantidadeItens INTO _nova_quantidade;
                 END IF;
-                IF _nova_quantidade > (SELECT maxItens FROM Inventario WHERE personagem = NEW.inventario) THEN
+                IF _nova_quantidade >= (SELECT maxItens FROM Inventario WHERE personagem = NEW.inventario) THEN
                     RAISE EXCEPTION 'A quantidade de itens excede o limite máximo no inventário.';
                 END IF;
                 RETURN NULL;
@@ -1890,6 +1890,7 @@ class DataBase():
         DataBase.create_new_zumbi(conn, id = 3, vida = 100, classe = 'Corredor', dano = 15)
         DataBase.insert_instancia(conn, idInstancia = 1, NPC = 3, sala = 1)
         DataBase.insert_instancia(conn, idInstancia = 2, NPC = 2, sala = 2)
+        DataBase.insert_veiculo_aereo(conn, id = 1, sala = 1, )
         #DataBase.inseri
         #inserir_arma_fogo(connection,id, sala, nome, dano, distancia, capacidadeMunicao)
 

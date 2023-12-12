@@ -139,8 +139,8 @@ def casa_abandonada_exploracao():
         if escolha == 'pegar':
             print("\nVocê decide pegar os itens. Quem sabe eles possam ajudar na sua jornada.")
             print("\nVocê pegou uma corda e um isqueiro")
-            DataBase.update_ferramenta(connection=conn, id = 1, sala = 'NULL', inventario = 1, durabilidade = 100, nome = 'corda')
-            DataBase.update_ferramenta(connection=conn, id = 3, sala = 'NULL', inventario = 1, durabilidade = 90, nome = 'isqueiro')
+            DataBase.update_ferramenta(connection=conn, id = 1, sala = 1, inventario = 1, durabilidade = 100, nome = 'corda')
+            DataBase.update_ferramenta(connection=conn, id = 3, sala = 1, inventario = 1, durabilidade = 90, nome = 'isqueiro')
             rua_deserta()
             DataBase.update_pc(conn, 1, 3, name, 0, 50)
 
