@@ -50,6 +50,7 @@ python3 game.py
 - [**Módulo 1:** Apresentação no SharePoint](https://unbbr.sharepoint.com/:v:/s/Bancos1/EYwxobRqXIZKoffKm-LGR9QBVNREMPZuQ3zBR8UXwwaQcg?e=eVV8i8&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZyIsInJlZmVycmFsQXBwUGxhdGZvcm0iOiJXZWIiLCJyZWZlcnJhbE1vZGUiOiJ2aWV3In19) ou [Vídeo no Diretório](docs/apresentacoes)
 - [**Módulo 2:** Vídeo no YouTube](https://youtu.be/djW7gptqLoQ)
 - [**Módulo 3:** Vídeo no YouTube](https://youtu.be/L42dy9sB3yw)
+- [**Apresentação Final** ](https://youtu.be/2lVUnAuZ-rg)
 
 ## Entregas por Módulo
 
