@@ -8,6 +8,34 @@
 
 Este repositório é dedicado ao desenvolvimento de trabalhos para a disciplina de Sistemas de Banco de Dados 1. O jogo base escolhido para aplicação dos conceitos é o _Unturned_, um jogo de sobrevivência em mundo aberto com temática de apocalipse zumbi. O objetivo é explorar como os sistemas de banco de dados podem ser integrados e utilizados em um ambiente de jogo.
 
+# Pré-requisitos
+
+* psycopg2
+* docker compose
+* python3
+
+## Como executar ?
+
+* Fazer o build o docker compose (somente a primeira vez)
+```shell
+docker compose up --build
+```
+
+* Se já fez o build uma vez, basta executar
+```shell
+docker compose up 
+```
+
+* Pegue o ip do localhost do container e nos arquivos ./src/game.py e ./src/adventures/russia.py cole no host do psycopg2
+```shell
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 20232_unturned-postgres-1
+```
+
+* Agora no diretório de ./src
+```shell
+python3 game.py
+```
+
 ## Integrantes do Grupo
 
 | **Matrícula** | **Nome**                        | **Foto**                                                                                                   |
