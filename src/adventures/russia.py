@@ -1,237 +1,314 @@
 # import time
 from Database import DataBase
+from commands import Commands
+from classes import Mortes
 import psycopg2
 
-# Conectar ao banco de dados
 conn = psycopg2.connect(
-    host="172.21.0.3",           
+    host="172.23.0.2",           
     database="unturned",     
     user="postgres",             
     password="postgres"
 )
 
-
-# Criar um objeto cursor para executar comandos SQL
 cur = conn.cursor()
 
+global name
+
 def russia():
+    global name
+    print("Vamos criar seu personagem!")
+    name = input("Escolha o nome do seu personagem: ")
+    DataBase.create_new_pc(conn, 1, 1, name, 100, 100)
+    DataBase.inserir_inventario(conn, cur)
     DataBase.select_mapa_descricao(conn, cur)
+    cidade_arruinada()
 
 def cidade_arruinada():
     DataBase.select_sala_descricao(conn, cur, nome="cidade_arruinada")
     
-    
     while True:
         print("\nOpções:")
-        print("1. Sair correndo")
-        print("2. Enfrentar o zumbi")
+        print("Fugir. Sair correndo")
+        print("Lutar. Enfrentar o zumbi")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
-            print("\nVocê decide correr para evitar o confronto imediato.")
+        if escolha == 'fugir':
+            print("Você decide correr para evitar o confronto imediato.")
             print("Você corre desesperadamente e encontra uma casa próxima para se esconder.")
             casa_abandonada()
-            break
-        elif escolha == "2":
-            print("\nVocê decide enfrentar o zumbi. Prepare-se para o combate!")
+
+        elif escolha == 'lutar':
+            print("Você decide enfrentar o zumbi. Prepare-se para o combate!")
             print("Após uma luta árdua, você consegue derrotar o zumbi.")
             print("O zumbi dropa um item: uma faca.")
-            casa_abandonada_com_faca()
-            break
+            print("\nOpções:")
+            print("Pegar. Sair correndo")
+            print("Deixar. Enfrentar o zumbi")
+
+            escolha = input("O que você deseja fazer? Digite 'ajuda' para ver os comandos\n").lower()
+
+            if escolha == 'pegar':
+                DataBase.update_arma_branca(connection=conn,id=1, sala=1,inventario=1, nome="faca", dano=15, material="ferro")
+                casa_abandonada_com_faca()
+
+            elif escolha == 'deixar':
+                casa_abandonada()
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para sair correndo ou 2 para enfrentar o zumbi.")
+            print("Opção inválida.")
+            
 
 def casa_abandonada():
     DataBase.select_sala_descricao(conn, cur, nome="casa_abandonada")
-    print("\nDentro da casa, você percebe que não está sozinho. Outro zumbi está no local.")
-    # 
+    DataBase.update_pc(conn, 1, 2, name, 100, 50)
     
     while True:
         print("\nOpções:")
-        print("1. Sair correndo da casa")
-        print("2. Voltar para a rua onde encontrou o primeiro zumbi")
+        print("Fugir. Sair correndo da casa")
+        print("Voltar. Voltar para a rua onde encontrou o primeiro zumbi")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
-            print("\nVocê decide sair correndo da casa, mas o zumbi te alcança e captura.")
-            death_by_running()
-            break
-        elif escolha == "2":
-            print("\nVocê decide voltar para a rua onde encontrou o primeiro zumbi.")
+        if escolha == 'fugir':
+            print("Você decide sair correndo da casa, mas o zumbi te alcança e captura.")
+            DataBase.update_pc(conn, 1, 2, name, 0, 50)
+            Mortes.death_by_running()
+
+        elif escolha == 'voltar':
             cidade_arruinada()
-            break
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para sair correndo da casa ou 2 para voltar para a rua.")
+            print("Opção inválida.")
+
 
 def casa_abandonada_com_faca():
     DataBase.select_sala_descricao(conn, cur, nome="casa_abandonada")
-    print("\nAo entrar na casa, você vê o zumbi que estava lá dentro.")
-    
-    
+    DataBase.update_pc(conn, 1, 3, name, 100, 50)
+
     while True:
         print("\nOpções:")
-        print("1. Enfrentar o zumbi")
-        print("2. Sair correndo para a rua")
+        print("lutar. Enfrentar o zumbi")
+        print("fugir. Sair correndo para a rua")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'fugir':
+            print("Você decide sair correndo da casa, mas o zumbi te alcança e captura.")
+            Mortes.death_by_running()
+            DataBase.update_pc(conn, 1, 2, name, 0, 50)
+
+        elif escolha == 'lutar':
             print("\nVocê decide enfrentar o zumbi dentro da casa.")
             print("Com a faca em mãos, você consegue derrotar o zumbi.")
             casa_abandonada_exploracao()
-            break
-        elif escolha == "2":
-            print("\nVocê decide sair correndo da casa e volta para a rua.")
-            death_by_running()
-            break
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para enfrentar o zumbi ou 2 para sair correndo para a rua.")
+            print("Opção inválida.")
+    
 
 def casa_abandonada_exploracao():
-    print("\nCom o zumbi derrotado, você decide explorar a casa.")
-    
-    print("Dentro da casa, você encontra alguns itens úteis.")
-    
+    DataBase.select_sala_descricao(conn, cur, nome="casa_abandonada")
 
     while True:
         print("\nOpções:")
-        print("1. Pegar os itens e avançar")
-        print("2. Não pegar os itens e avançar para a rua")
+        print("Pegar. Pegar os itens e avançar")
+        print("Fugir. Não pegar os itens e avançar para a rua")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'pegar':
             print("\nVocê decide pegar os itens. Quem sabe eles possam ajudar na sua jornada.")
+            print("\nVocê pegou uma corda e um isqueiro")
+            DataBase.update_ferramenta(connection=conn, id = 1, sala = 'NULL', inventario = 1, durabilidade = 100, nome = 'corda')
+            DataBase.update_ferramenta(connection=conn, id = 3, sala = 'NULL', inventario = 1, durabilidade = 90, nome = 'isqueiro')
             rua_deserta()
-            break
-        elif escolha == "2":
+            DataBase.update_pc(conn, 1, 3, name, 0, 50)
+
+        elif escolha == 'fugir':
             print("\nVocê decide não pegar os itens e avança para a rua.")
             rua_deserta()
-            break
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para pegar os itens ou 2 para avançar para a rua.")
+            print("Opção inválida.")
+
 
 def rua_deserta():
     DataBase.select_sala_descricao(conn, cur, nome="rua_deserta")
 
     while True:
         print("\nOpções:")
-        print("1. Enfrentar os zumbis")
-        print("2. Correr para dentro da igreja")
+        print("Lutar. Enfrentar os zumbis")
+        print("Fugir. Correr para dentro da igreja")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'lutar':
             print("\nVocê decide enfrentar os três zumbis. Uma escolha ousada, mas arriscada.")
-            death_by_corage()
-        elif escolha == "2":
+            Mortes.death_by_corage()  
+
+        elif escolha == 'fugir':
             print("\nVocê decide correr para dentro da igreja, dividindo os zumbis.")
             igreja()
-            break
+            DataBase.update_pc(conn, 1, 4, name, 0, 50)
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para enfrentar os zumbis ou 2 para correr para dentro da igreja.")
+            print("Opção inválida.")
 
 
 def igreja():
     DataBase.select_sala_descricao(conn, cur, nome="igreja")
-    
-    
+
     while True:
         print("\nOpções:")
-        print("1. Se esgueirar pelas cadeiras e matar o zumbi pelas costas")
-        print("2. Fugir pela janela da igreja")
+        print("Lutar. Se esgueirar pelas cadeiras e matar o zumbi pelas costas")
+        print("Fugir. Fugir pela janela da igreja")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'lutar':
             print("\nVocê decide se esgueirar pelas cadeiras, se aproximar do zumbi e atacar pelas costas.")
-            
             print("Com um golpe certeiro, você mata o zumbi sem chamar a atenção.")
-            igreja_armado()
-            break
-        elif escolha == "2":
+            igreja_armado() 
+
+        elif escolha == 'fugir':
             print("\nVocê decide fugir pela janela da igreja, criando uma rota alternativa.")
-            
             print("Você consegue escapar pela janela e encontra uma rota diferente, evitando os outros zumbis na rua.")
             fazenda_celeiro()
-            break
+            DataBase.update_pc(conn, 1, 5, name, 0, 50)
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para se esgueirar pelas cadeiras ou 2 para fugir pela janela.")
+            print("Opção inválida.")
+    
 
 def igreja_armado():
-    print("\nAo matar o zumbi, você encontra uma arma de fogo com 7 balas.")
-    
-    
     while True:
         print("\nOpções:")
-        print("1. Pegar a arma e avançar para fora da igreja")
-        print("2. Deixar a arma e avançar para fora da igreja")
+        print("Pegar. Pegar a arma e avançar para fora da igreja")
+        print("Fugir. Deixar a arma e avançar para fora da igreja")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'pegar':
             print("\nVocê pega a arma de fogo. Pode ser útil para enfrentar ameaças mais perigosas.")
+            DataBase.update_arma_fogo(id=4, sala='NULL', inventario=1, nome="pistola", dano=45, distancia=15, capacidadeMunicao=8)
             print("\nVocê encontra uma porta dos fundos na igreja, e decide avançar para não arriscar a vida com os zumbis na rua.")
             print("Você segue pela escuridão até chegar a uma fazenda à noite.")
             print("Na fazenda, você avista um celeiro à distância.")
-            fazenda_celeiro()
-            break
-        elif escolha == "2":
+            fazenda_celeiro() 
+
+        elif escolha == 'fugir':
             print("\nVocê decide deixar a arma de fogo e avança para fora da igreja.")
-            
             print("Você segue pela escuridão até chegar a uma fazenda à noite.")
-            
             print("Na fazenda, você avista um celeiro à distância.")
             fazenda_celeiro()
-            break
+            DataBase.update_pc(conn, 1, 6, name, 0, 50)
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para pegar a arma ou 2 para avançar para fora da igreja.")
+            print("Opção inválida.")
+    
 
 def fazenda_celeiro():
     DataBase.select_sala_descricao(conn, cur, nome="fazenda_celeiro")
-    
 
     while True:
         print("\nOpções:")
-        print("1. Avançar para pegar o carro")
-        print("2. Explorar a fazenda antes de pegar o carro")
+        print("Pegar. Avançar para pegar o carro")
+        print("Fugir. Explorar a fazenda antes de pegar o carro")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'pegar':
             print("\nVocê decide avançar para pegar o carro no celeiro.")
-            pegar_carro()
-            break
-        elif escolha == "2":
+            pegar_carro() 
+
+        elif escolha == 'fugir':
             print("\nVocê decide explorar a fazenda antes de pegar o carro.")
             explorar_fazenda()
-            break
+            DataBase.update_pc(conn, 1, 7, name, 0, 50)
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para avançar para pegar o carro ou 2 para explorar a fazenda.")
+            print("Opção inválida.")
+    
 
 def pegar_carro():
     DataBase.select_sala_descricao(conn, cur, nome="pegar_carro")
-    
+
     while True:
         print("\nOpções:")
-        print("1. Sair do celeiro")
-        print("2. Ir para o carro")
+        print("Voltar. Sair do celeiro")
+        print("Pegar. Ir para o carro")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
-            print("\nVocê decide sair do celeiro e reconsiderar a situação do lado de fora.")
-            explorar_fazenda()
-            break
-        elif escolha == "2":
+        if escolha == 'pegar':
             print("\nVocê decide ir para o carro e tentar ignorar o zumbi gigante chorando.")
             tentar_ignorar_zumbi()
-            break
-        else:
-            print("Opção inválida. Por favor, escolha 1 para sair do celeiro ou 2 para ir para o carro.")
+            DataBase.update_pc(conn, 1, 8, name, 0, 50)
 
+        elif escolha == 'voltar':
+            print("\nVocê decide sair do celeiro e reconsiderar a situação do lado de fora.")
+            explorar_fazenda()
+            
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
+        else:
+            print("Opção inválida.")
+    
 def tentar_ignorar_zumbi():
     DataBase.select_sala_descricao(conn, cur, nome="tentar_ignorar_zumbi")
     fugir_para_milharal()
@@ -241,21 +318,28 @@ def fugir_para_milharal():
 
     while True:
         print("\nOpções:")
-        print("1. Chutar o zumbi rastejante")
-        print("2. Atirar no zumbi rastejante (caso tenha a arma)")
+        print("Lutar. Chutar o zumbi rastejante")
+        print("Usar arma. Atirar no zumbi rastejante (caso tenha a arma)")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'lutar':
             print("\nVocê decide chutar o zumbi rastejante, mas o zumbi rastejante te morde, só soltando após dar um segundo chute")
-            death_by_bite()
-            break
-        elif escolha == "2":
+            Mortes.death_by_bite()
+
+        elif escolha == 'usar arma':
             print("\nVocê decide atirar no zumbi rastejante usando a arma que pegou antes.")
             atirar_zumbi_rastejante()
-            break
+            
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para chutar o zumbi ou 2 para atirar (caso tenha a arma).")
+            print("Opção inválida.")
 
 def atirar_zumbi_rastejante():
     DataBase.select_sala_descricao(conn, cur, nome="atirar_zumbi_rastejante")
@@ -264,74 +348,85 @@ def atirar_zumbi_rastejante():
 def continuar_fugindo_milharal():
     DataBase.select_sala_descricao(conn, cur, nome="continuar_fugindo_milharal")
     
-
     while True:
         print("\nOpções:")
-        print("1. Pular e nadar até o outro lado do rio")
-        print("2. Correr até o barco a motor")
+        print("Fugir. Pular e nadar até o outro lado do rio")
+        print("Avançar. Correr até o barco a motor")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == 'fugir':
             print("\nVocê decide pular no rio e nadar até o outro lado, evitando o barco.")
             nadar_rio()
-            break
-        elif escolha == "2":
+
+        elif escolha == 'avançar':
             print("\nVocê decide correr até o barco a motor, esperando que seja sua rota de fuga.")
             correr_ate_barco()
-            break
+            
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para pular no rio ou 2 para correr até o barco.")
+            print("Opção inválida.")
+
 
 def nadar_rio():
     DataBase.select_sala_descricao(conn, cur, nome="nadar_rio")
-    death_by_drowning()
+    Mortes.death_by_drowning()
 
 def correr_ate_barco():
     DataBase.select_sala_descricao(conn, cur, nome="corre_ate_barco")
-
     verificar_mala_barco()
 
 def verificar_mala_barco():
     print("\nVocê decide verificar a mala e encontra:")
-    print("- Uma metralhadora")
-    print("- 2 bandagens")
-    print("- Um molotov")
+    print("Uma metralhadora")
+    print("2 bandagens")
+    print("Um molotov")
     
     print("\nEnquanto examina os itens, percebe que o zumbi chorador está se aproximando rapidamente.")
 
     while True:
         print("\nOpções:")
-        print("1. Jogar o molotov no zumbi")
-        print("2. Atirar no zumbi com a metralhadora")
-        print("3. Atirar no zumbi com a pistola")
-        print("4. Tentar correr e ligar o barco")
-        print("5. Usar uma bandagem para se curar")
+        print("Usar <nome-arma>")
+        print("Fugir - Tentar fugir para o barco")
 
-        escolha = input("O que você deseja fazer? Escolha 1, 2, 3, 4 ou 5: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == "usar molotov":
             print("\nVocê decide jogar o molotov no zumbi chorador.")
             jogar_molotov()
             break
-        elif escolha == "2":
+        elif escolha == "usar metralhadora":
             print("\nVocê decide atirar no zumbi com a metralhadora.")
             atirar_metralhadora()
             break
-        elif escolha == "3":
+        elif escolha == "usar pistola":
             print("\nVocê decide atirar no zumbi com a pistola.")
             atirar_pistola()
             break
-        elif escolha == "4":
+        elif escolha == "fugir":
             print("\nVocê decide tentar correr e ligar o barco.")
             correr_ligar_barco()
             break
-        elif escolha == "5":
+        elif escolha == "usar bandagem":
             print("\nVocê decide usar uma bandagem para se curar.")
             usar_bandagem()
             break
+            
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Escolha 1, 2, 3, 4 ou 5.")
+            print("Opção inválida.")
 
 def jogar_molotov():
     print("\nVocê joga o molotov no zumbi chorador, criando uma explosão de chamas.")
@@ -355,7 +450,6 @@ def atirar_pistola():
 def correr_ligar_barco():
     DataBase.select_sala_descricao(conn, cur, nome="corre_ligar_barco")
 
-
 def usar_bandagem():
     print("\nVocê usa uma bandagem para se curar rapidamente.")
     print("Enquanto se cura, o zumbi chorador se aproxima, mas o zumbi agarra você, impedindo você se curar..")
@@ -366,27 +460,34 @@ def correr_ligar_barco_zumbi_caido():
     print("Agora você o deixa em um horizonte distante enquanto escapa")
 
 def explorar_fazenda():
-    print("\nVocê decide explorar a fazenda antes de pegar o carro.")
-    print("\nEm um galpão, você encontra um galão de gasolina.")
-    
+    DataBase.select_sala_descricao(conn, cur, nome="explorar_fazenda")
 
     while True:
         print("\nOpções:")
-        print("1. Pegar o galão de gasolina")
-        print("2. Deixar o galão de gasolina e continuar explorando")
+        print("Pegar - Pegar o galão de gasolina")
+        print("Fugir - Deixar o galão de gasolina e continuar explorando")
 
-        escolha = input("O que você deseja fazer? Escolha 1 ou 2: ")
+        escolha = input("Digite sua escolha: ").lower()
 
-        if escolha == "1":
+        if escolha == "pegar":
             print("\nVocê decide pegar o galão de gasolina. Pode ser útil para abastecer o carro.")
             pegar_galao_gasolina()
             break
-        elif escolha == "2":
+        elif escolha == "fugir":
             print("\nVocê decide deixar o galão de gasolina e continuar explorando a fazenda.")
             continuar_explorando_sem_gasolina()
             break
+            
+
+        elif escolha == 'ajuda':
+            Commands.ajuda(escolha)
+        
+        elif escolha == 'sair':
+            Commands.ajuda(escolha)
+        
         else:
-            print("Opção inválida. Por favor, escolha 1 para pegar o galão de gasolina ou 2 para continuar explorando.")
+            print("Opção inválida.")
+    
 
 def pegar_galao_gasolina():
     print("\nVocê pega o galão de gasolina. Agora, você tem um meio de abastecer o carro.")
@@ -399,31 +500,3 @@ def continuar_explorando_sem_gasolina():
 
 def pegar_carro_com_gasolina():
     DataBase.select_sala_descricao(conn, cur, nome="pegar_carro_com_gasolina")
-
-
-# -------------------------------- Mortes ----------------------------------------
-def death_by_running():
-    print("\nInfelizmente, ao tentar correr, o zumbi te alcança e te captura.")
-    print("Você é incapaz de escapar, e o zumbi, com sede de carne humana, te devora.")
-    print("Game over. Sua jornada chegou ao fim. O apocalipse zumbi é impiedoso.")
-    exit()
-
-def death_by_corage():
-    print("Infelizmente, os zumbis são muitos e te cercam. Você não consegue escapar.")
-    print("Game over. Sua jornada chegou ao fim. O apocalipse zumbi é impiedoso.")
-    exit()
-
-def death_by_bite():
-    print("Após ser mordido você começa a passar mal rapidamente.")
-    print("Olha para o seu braço e está começando a se transformar.")
-    print("Sua consciência é tomada pela sede de sangue agora...")
-    print("Game over. Sua jornada chegou ao fim. O apocalipse zumbi é impiedoso.")
-    exit()
-
-def death_by_drowning():
-    print("Você tenta nadar até o outro lado do rio, mas está cansado demais para isso.")
-    print("Logo percebe que não vai conseguir, aceitando lentamente seu destino final.")
-    print("Em pouco tempo, lembra dos momentos felizes que viveu e de todas as decisões até aquele momento.")
-    print("Deixando o lado tomar seu corpo como seu, o levando para o fundo...")
-    print("Game over. Sua jornada chegou ao fim. O apocalipse zumbi é impiedoso.")
-    exit()
